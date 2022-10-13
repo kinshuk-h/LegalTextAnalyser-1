@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExpertController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth');
+
+Route::get('/register', [ExpertController::class, 'create'])->middleware('guest');
+Route::post('/expert', [ExpertController::class, 'store']);
+
+Route::get('/login', [ExpertController::class, 'login'])->name('login')->middleware('guest');
+Route::post('/authenticate', [ExpertController::class, 'authenticate']);
+
+Route::post('/logout', [ExpertController::class, 'logout'])->middleware('auth');
