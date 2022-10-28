@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExpertController;
+use App\Http\Controllers\ParagraphController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,8 @@ Route::get('/login', [ExpertController::class, 'login'])->name('login')->middlew
 Route::post('/authenticate', [ExpertController::class, 'authenticate']);
 
 Route::post('/logout', [ExpertController::class, 'logout'])->middleware('auth');
+
+//labeling
+Route::get('/paragraph', [ParagraphController::class, 'index'])->middleware('auth');
+Route::get('/paragraph/allocate', [ParagraphController::class, 'create'])->middleware('auth');
+Route::post('/paragraph/label', [ParagraphController::class, 'store'])->middleware('auth');

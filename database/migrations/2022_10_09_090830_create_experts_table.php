@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('experts', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id')->unsigned();
             $table->string('name',100);
             $table->string('email',100)->unique();
             $table->string('phone_num',20)->unique();

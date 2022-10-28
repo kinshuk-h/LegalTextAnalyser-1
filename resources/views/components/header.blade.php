@@ -10,7 +10,7 @@
 			  Welcome {{auth()->user()->name}}
 			</span>
 
-			<a href="#">Paragraphs</a>		
+			<a href="/paragraph">Paragraphs</a>		
 			<a href="/dashboard">Dashboard</a>	
 
 			<form method="POST" action="/logout">
@@ -18,8 +18,6 @@
 				<button type="submit">Logout</button>
 			</form>
 		@else
-			<a href="#">Paragraphs</a>		
-			<a href="/dashboard">Dashboard</a>
 			<a href="/register" >Register</a>
 			<a href="/login" >Login</a>
 		@endauth
