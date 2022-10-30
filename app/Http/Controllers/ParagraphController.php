@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Labels;
 use App\Models\Experts;
+use App\Models\Documents;
 use App\Models\Paragraphs;
 use Illuminate\Http\Request;
 use App\Models\Classifications;
@@ -21,12 +22,15 @@ class ParagraphController extends Controller
     public function create(){
         $id=auth()->user()->id;
         $labels= Labels::all();
+        DB::select("CALL update_paragraph_labeling_status_procedure()");
 
         //check if already assigned any paragraph then assign that only else
         $alloted=Classifications::where([ 'e_id'=> $id, 'status'=> 'alloted' ])->first();
         if($alloted!=null){
             return view("paragraph.labelarea",[
-                'message'=>Paragraphs::where([ 'doc_id'=> $alloted->doc_id , 'paragraph_num'=> $alloted->paragraph_num ])->first(),
+                'message'=>
+                [   "paragraph"=>Paragraphs::where([ 'doc_id'=> $alloted->doc_id , 'paragraph_num'=> $alloted->paragraph_num ])->first() ,
+                    "document"=>Documents::where(['doc_id'=> $alloted->doc_id])->first() ],
                 'labels'=> $labels
             ]);
         }
@@ -46,18 +50,20 @@ class ParagraphController extends Controller
             ]);
 
             DB::commit();
-            return view("paragraph.labelarea",['message'=> $paragraph , 'labels'=> $labels]);
+            return view("paragraph.labelarea",['message'=> [ "paragraph"=> $paragraph ,
+                "document"=>Documents::where(['doc_id'=> $paragraph->doc_id])->first() ],
+                'labels'=> $labels]);
         } catch(\Exception $e)
         {
             DB::rollback();
-            return view("paragraph.labelarea",['message'=> $e->getErrors() , 'labels'=> $labels]);
+            return view("paragraph.labelarea",['message'=> $e->getMessage() , 'labels'=> $labels]);
         }
     }
 
     //label a paragraph
     public function store(Request $request){
         DB::select("CALL update_paragraph_labeling_status_procedure()");
-
+        
         //check status if times_up then no label else
         $id=auth()->user()->id;
         $alloted=Classifications::where([ 'e_id'=> $id, 'status'=> 'alloted' ])->first();
@@ -66,25 +72,40 @@ class ParagraphController extends Controller
         if($alloted==null){
             return redirect("/paragraph")->with('message','Time Is Up For Labeling.');
         }
+        
+        //validate input
+        $inputs=$request->validate([
+            'labels' => 'required|array'
+        ]);
+        
+        DB::beginTransaction();
 
-         //store the labels
-        $labels=$request->input('labels');  //TODO: validate the input
-        foreach($labels as $label)
-            ClassifiedLabels::create([
+        try{
+
+            //store the labels
+            $labels=$inputs['labels'];
+            foreach($labels as $label)
+                ClassifiedLabels::create([
+                    'e_id' => $alloted->e_id,
+                    'doc_id' => $alloted->doc_id,
+                    'paragraph_num' => $alloted->paragraph_num,
+                    'label_num' => $label,
+                ]);
+
+            //update status of paragraph
+            Classifications::where([
                 'e_id' => $alloted->e_id,
                 'doc_id' => $alloted->doc_id,
-                'paragraph_num' => $alloted->paragraph_num,
-                'label_num' => $label,
-            ]);
+                'paragraph_num' => $alloted->paragraph_num])->update([
+                    'labeled_time' => now('Asia/Kolkata'),
+                    'status' => 'labeled']);
 
-        //TODO: Do transaction on this
-        Classifications::where([
-            'e_id' => $alloted->e_id,
-            'doc_id' => $alloted->doc_id,
-            'paragraph_num' => $alloted->paragraph_num])->update([
-                'labeled_time' => now('Asia/Kolkata'),
-                'status' => 'labeled']);
-        //TODO: Change timezones of each model's timestamps
-        return redirect("/paragraph")->with('message','Paragraph is Labeled.');
+            DB::commit();
+            return redirect("/paragraph")->with('message','Paragraph is Labeled.');
+        } catch(\Exception $e)
+        {
+            DB::rollback();
+            return redirect("/paragraph")->with('message',$e->getMessage());
+        }
     }
 }

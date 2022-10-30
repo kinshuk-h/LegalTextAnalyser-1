@@ -20,7 +20,7 @@ return new class extends Migration
             BEGIN  
                 Update classifications as c
                 Set c.status=\'timesup\'
-                Where c.allocation_time < NOW() - INTERVAL 1 HOUR AND e_id <> 0 ;   
+                Where c.status=\'alloted\' AND c.allocation_time < NOW() - INTERVAL 1 HOUR AND e_id <> 0 ;   
             END;
        ');
     }

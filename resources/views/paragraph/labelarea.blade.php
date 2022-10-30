@@ -6,7 +6,8 @@
 
         <h1>Label Area</h1>
         <p>Paragraph</p>
-        <p>{{ $message }}</p> 
+        <p>{{ $message['document'] }}</p> 
+        <p>{{ $message['paragraph'] }}</p> 
         
         <form action="/paragraph/label" method="POST">
             @csrf
@@ -17,6 +18,12 @@
                     <span class="checkmark"></span>
                 </label>
             @endforeach
+
+            <br>
+            
+            @error('labels')
+                <span style="color:red">{{ $message }}</span>
+            @enderror
 
             <br>
             <button type="submit" style="border:3px solid;padding:2px;border-radius:5px;">
