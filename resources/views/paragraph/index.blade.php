@@ -11,7 +11,9 @@
         @endif
 
         <h1>Paragraph labeler</h1>
-        <button><a href="/paragraph/allocate" >Allocate</a></button>
+        <button style="padding: 0.8rem 1.5rem;margin: 0.8rem;border-radius: 10px;background-color: black;color: white;border: none;font-weight: bold;">
+            <a href="/paragraph/allocate" >Allocate</a>
+        </button>
     </div>
     
 @endsection

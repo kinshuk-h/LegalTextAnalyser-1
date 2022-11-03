@@ -19,8 +19,20 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/aboutus', function () {
+    return view('aboutus');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
+})->middleware('auth');
+
+Route::get('/dashboard/tasks', function () {
+    return view('db.dbtasks');
+})->middleware('auth');
+
+Route::get('/dashboard/stats', function () {
+    return view('db.dbstats');
 })->middleware('auth');
 
 Route::get('/register', [ExpertController::class, 'create'])->middleware('guest');

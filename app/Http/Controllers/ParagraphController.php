@@ -30,7 +30,9 @@ class ParagraphController extends Controller
             return view("paragraph.labelarea",[
                 'message'=>
                 [   "paragraph"=>Paragraphs::where([ 'doc_id'=> $alloted->doc_id , 'paragraph_num'=> $alloted->paragraph_num ])->first() ,
-                    "document"=>Documents::where(['doc_id'=> $alloted->doc_id])->first() ],
+                    "document"=>Documents::where(['doc_id'=> $alloted->doc_id])->first(),
+                    "allocation"=> $alloted
+                 ],
                 'labels'=> $labels
             ]);
         }
@@ -50,13 +52,16 @@ class ParagraphController extends Controller
             ]);
 
             DB::commit();
-            return view("paragraph.labelarea",['message'=> [ "paragraph"=> $paragraph ,
-                "document"=>Documents::where(['doc_id'=> $paragraph->doc_id])->first() ],
+            return view("paragraph.labelarea",['message'=> 
+                [   "paragraph"=> $paragraph ,
+                    "document"=>Documents::where(['doc_id'=> $paragraph->doc_id])->first(),
+                    "allocation"=> Classifications::where([ 'e_id' => $id,'doc_id' => $paragraph['doc_id'],'paragraph_num' => $paragraph['paragraph_num']])->first()
+                ],
                 'labels'=> $labels]);
         } catch(\Exception $e)
         {
             DB::rollback();
-            return view("paragraph.labelarea",['message'=> $e->getMessage() , 'labels'=> $labels]);
+            return view("paragraph.labelarea",['message'=> 'Something bad happened ;)' , 'labels'=> $labels]);
         }
     }
 
@@ -105,7 +110,7 @@ class ParagraphController extends Controller
         } catch(\Exception $e)
         {
             DB::rollback();
-            return redirect("/paragraph")->with('message',$e->getMessage());
+            return redirect("/paragraph")->with('message','Something bad happened ;)');
         }
     }
 }

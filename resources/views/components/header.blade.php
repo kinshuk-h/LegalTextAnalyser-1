@@ -22,7 +22,7 @@
 			<a href="/login" >Login</a>
 		@endauth
 
-		<a href="#">About Us</a>
+		<a href="/aboutus">About Us</a>
 		
 	</div>
 	<button class="get-started-btn-h">

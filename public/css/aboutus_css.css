@@ -1,0 +1,36 @@
+.aheading{
+	font-weight: bolder;
+	font-size: 2.5em;
+	text-align: center;
+	width: 90%;
+	margin: 100px auto;
+	margin-bottom: 0px;
+}
+
+.features{
+	display: flex;
+	flex-wrap: wrap;
+	width: 100vw;
+	justify-content: center;
+	gap: 1.5rem;
+	margin-top: 2rem;
+}
+
+.feature{
+	border-radius: 5px;
+	display: flex;
+	background-color: #fff;
+	padding: 1.5rem;
+	width: 45%;
+	box-shadow: 10px 10px 10px #00000022;
+}
+
+.fhead{
+	font-weight: bolder;
+	margin-bottom: 1rem;
+}
+
+.iconimg{
+	width: 30px;
+	margin: 0.5rem;
+}

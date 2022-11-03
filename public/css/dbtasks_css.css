@@ -1,0 +1,70 @@
+.rightsec
+{ 
+    margin-top: 70px;
+    margin-left: 250px;
+}
+
+.mytasks{
+    background-color: white;
+    padding: 0.5rem;
+    text-align: left;
+    font-weight: bolder;
+    font-size: 1.5em;
+    box-shadow: 10px 10px 10px #00000022;
+}
+
+.card{
+    display: flex;
+    flex-direction: row;
+    padding:0.2rem;
+    margin: 1rem;
+    border-radius: 5px;
+    align-items: center;
+    background-color: white;
+    box-shadow: 10px 10px 10px #9e9d9d;
+}
+
+.context{
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    margin-right: 10px;    
+}
+
+.para{
+    height: 10vh;
+    padding: 0.5rem;
+}
+
+.labels{
+    padding: 0.5rem;
+    color:blueviolet;
+
+}
+.modify-btn{
+    height: 5vh;
+	font-weight: normal;
+	border: 3px solid #222;
+	padding: 0.4rem;
+    margin-right: 10px;
+	border-radius: 6px;
+	background-color: white;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.btn{
+	font-weight: normal;
+	border: 1px solid #222;
+	padding: 0.3rem;
+	border-radius: 6px;
+}
+
+button:nth-child(1){
+    margin-right: 20px;
+}
