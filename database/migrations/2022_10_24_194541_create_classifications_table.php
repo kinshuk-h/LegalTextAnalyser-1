@@ -25,7 +25,8 @@ return new class extends Migration
             $table->foreign('e_id')->references('id')->on('experts')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign(['doc_id','paragraph_num'])->references(['doc_id','paragraph_num'])->on('paragraphs')->onDelete('cascade')->onUpdate('cascade');
             
-            $table->timestamps();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 

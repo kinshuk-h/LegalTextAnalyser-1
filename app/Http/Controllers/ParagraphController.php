@@ -37,30 +37,31 @@ class ParagraphController extends Controller
             ]);
         }
 
-        DB::beginTransaction();
-
         try {
             //find the non blocked paragraph that expert had not labelled earlier
-            $paragraph=Paragraphs::where(['is_blocked'=>0])->
-            whereRaw("(doc_id,paragraph_num) NOT IN(Select doc_id,paragraph_num From classifications Where e_id <=> " . $id .")")->get()->first();
-
             //assign that paragraph to expert
-            Classifications::create([
-                'e_id' => $id,
-                'doc_id' => $paragraph['doc_id'],
-                'paragraph_num' => $paragraph['paragraph_num'],
-            ]);
+            DB::statement('
+            Insert into classifications(e_id,doc_id,paragraph_num)
+            Select ? as e_id,doc_id,paragraph_num
+            From paragraphs as p
+            Where ( Select count(e_id) from classifications as c where c.paragraph_num=p.paragraph_num and c.doc_id=p.doc_id ) < 5 
+            and (doc_id,paragraph_num) NOT IN( Select doc_id,paragraph_num From classifications Where e_id <=> ? ) limit 1;',[$id,$id]);
 
-            DB::commit();
-            return view("paragraph.labelarea",['message'=> 
-                [   "paragraph"=> $paragraph ,
-                    "document"=>Documents::where(['doc_id'=> $paragraph->doc_id])->first(),
-                    "allocation"=> Classifications::where([ 'e_id' => $id,'doc_id' => $paragraph['doc_id'],'paragraph_num' => $paragraph['paragraph_num']])->first()
-                ],
-                'labels'=> $labels]);
+            $alloted=Classifications::where([ 'e_id'=> $id, 'status'=> 'alloted' ])->first();
+            if($alloted!=null){
+                return view("paragraph.labelarea",[
+                    'message'=>
+                    [   "paragraph"=>Paragraphs::where([ 'doc_id'=> $alloted->doc_id , 'paragraph_num'=> $alloted->paragraph_num ])->first() ,
+                        "document"=>Documents::where(['doc_id'=> $alloted->doc_id])->first(),
+                        "allocation"=> $alloted
+                    ],
+                    'labels'=> $labels
+                ]);
+            }
+            //If $alloted is null
+            throw new \Exception();
         } catch(\Exception $e)
         {
-            DB::rollback();
             return view("paragraph.labelarea",['message'=> 'Something bad happened ;)' , 'labels'=> $labels]);
         }
     }

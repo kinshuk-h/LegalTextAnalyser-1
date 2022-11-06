@@ -10,6 +10,7 @@ class Classifications extends Model
     use HasFactory;
 
     protected $table = 'classifications';
+    public $timestamps = false;
 
     protected $fillable = [
         'e_id','doc_id','paragraph_num'
