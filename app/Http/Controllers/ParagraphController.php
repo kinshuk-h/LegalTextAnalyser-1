@@ -62,7 +62,7 @@ class ParagraphController extends Controller
             throw new \Exception();
         } catch(\Exception $e)
         {
-            return view("paragraph.labelarea",['message'=> 'Something bad happened ;)' , 'labels'=> $labels]);
+            return redirect("/paragraph")->with('message','Something bad happened ;)');
         }
     }
 
