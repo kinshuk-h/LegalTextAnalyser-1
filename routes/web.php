@@ -47,3 +47,4 @@ Route::post('/logout', [ExpertController::class, 'logout'])->middleware('auth');
 Route::get('/paragraph', [ParagraphController::class, 'index'])->middleware('auth');
 Route::get('/paragraph/allocate', [ParagraphController::class, 'create'])->middleware('auth');
 Route::post('/paragraph/label', [ParagraphController::class, 'store'])->middleware('auth');
+Route::post('/paragraph/bypass', [ParagraphController::class, 'update'])->middleware('auth');

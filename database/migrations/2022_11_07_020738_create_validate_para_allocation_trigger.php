@@ -21,7 +21,7 @@ return new class extends Migration
             BEFORE INSERT ON classifications
             FOR EACH ROW
             BEGIN
-                IF (SELECT COUNT(e_id) FROM classifications WHERE doc_id=new.doc_id and paragraph_num = new.paragraph_num) >= 5 THEN
+                IF (SELECT COUNT(e_id) FROM classifications WHERE doc_id=new.doc_id and paragraph_num = new.paragraph_num and status not in (\'timesup\',\'bypass\') ) >= 5 THEN
                     SIGNAL SQLSTATE \'HY000\' SET
                         MYSQL_ERRNO=31001,
                         MESSAGE_TEXT=\'Maximum allocation count reached\';

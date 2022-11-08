@@ -23,7 +23,8 @@ return new class extends Migration
             $table->foreign('label_num')->references('label_num')->on('labels')->onDelete('cascade')->onUpdate('cascade');
 
             $table->primary(['e_id','doc_id', 'paragraph_num', 'label_num']);
-            $table->timestamps();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 

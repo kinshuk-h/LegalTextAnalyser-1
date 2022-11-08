@@ -39,7 +39,7 @@
             </div>
 
             <div class="labelcontainer">
-
+                {{-- Form for bypass labeling --}}
                 <form action="/paragraph/label" method="POST">
                     @csrf
     
@@ -65,6 +65,19 @@
                     <div class="subfooter">
                         <button type="submit" class="submit-btn-h">
                             SUBMIT
+                        </button>
+                    </div>
+                    <!--subfooter-->
+                </form>
+                {{-- Form for bypass labeling --}}
+                <form action="/paragraph/bypass" method="POST">
+                    @csrf
+
+                    <input type="radio" name="bypass" value="true" hidden checked>
+                    
+                    <div class="subfooter">
+                        <button type="submit" class="submit-btn-h">
+                            By Pass
                         </button>
                     </div>
                     <!--subfooter-->

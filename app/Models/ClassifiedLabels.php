@@ -10,6 +10,7 @@ class ClassifiedLabels extends Model
     use HasFactory;
 
     protected $table = 'classified_labels';
+    public $timestamps = false;
 
     protected $fillable = [
         'e_id','doc_id','paragraph_num','label_num'

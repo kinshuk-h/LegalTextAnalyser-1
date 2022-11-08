@@ -44,7 +44,7 @@ class ParagraphController extends Controller
             Insert into classifications(e_id,doc_id,paragraph_num)
             Select ? as e_id,doc_id,paragraph_num
             From paragraphs as p
-            Where ( Select count(e_id) from classifications as c where c.paragraph_num=p.paragraph_num and c.doc_id=p.doc_id ) < 5 
+            Where ( Select count(e_id) from classifications as c where c.paragraph_num=p.paragraph_num and c.doc_id=p.doc_id and status not in (\'timesup\',\'bypass\') ) < 5 
             and (doc_id,paragraph_num) NOT IN( Select doc_id,paragraph_num From classifications Where e_id <=> ? ) limit 1;',[$id,$id]);
 
             $alloted=Classifications::where([ 'e_id'=> $id, 'status'=> 'alloted' ])->first();
@@ -87,17 +87,6 @@ class ParagraphController extends Controller
         DB::beginTransaction();
 
         try{
-
-            //store the labels
-            $labels=$inputs['labels'];
-            foreach($labels as $label)
-                ClassifiedLabels::create([
-                    'e_id' => $alloted->e_id,
-                    'doc_id' => $alloted->doc_id,
-                    'paragraph_num' => $alloted->paragraph_num,
-                    'label_num' => $label,
-                ]);
-
             //update status of paragraph
             Classifications::where([
                 'e_id' => $alloted->e_id,
@@ -106,11 +95,57 @@ class ParagraphController extends Controller
                     'labeled_time' => now('Asia/Kolkata'),
                     'status' => 'labeled']);
 
+            //store the labels
+            $labels=$inputs['labels'];
+            $entries=[];
+            foreach($labels as $label)
+                $entries[]=[
+                    'e_id' => $alloted->e_id,
+                    'doc_id' => $alloted->doc_id,
+                    'paragraph_num' => $alloted->paragraph_num,
+                    'label_num' => $label,
+                ];
+            
+            ClassifiedLabels::insert($entries);
+
+
             DB::commit();
             return redirect("/paragraph")->with('message','Paragraph is Labeled.');
         } catch(\Exception $e)
         {
             DB::rollback();
+            return redirect("/paragraph")->with('message','Something bad happened ;)');
+        }
+    }
+
+    //bypass labeling
+    public function update(Request $request){
+        DB::select("CALL update_paragraph_labeling_status_procedure()");
+        
+        //check status if times_up then no label else
+        $id=auth()->user()->id;
+        $alloted=Classifications::where([ 'e_id'=> $id, 'status'=> 'alloted' ])->first();
+
+        //redirect to paragraph
+        if($alloted==null){
+            return redirect("/paragraph")->with('message','Time Is Up For Labeling.');
+        }
+        
+        //validate input
+        $inputs=$request->validate([
+            'bypass' => 'required'
+        ]);
+
+        try{
+            //update status of paragraph
+            Classifications::where([
+                'e_id' => $alloted->e_id,
+                'doc_id' => $alloted->doc_id,
+                'paragraph_num' => $alloted->paragraph_num])->update(['status' => 'bypass']);
+
+            return redirect("/paragraph")->with('message','Paragraph is By passed.');
+        } catch(\Exception $e)
+        {
             return redirect("/paragraph")->with('message','Something bad happened ;)');
         }
     }
