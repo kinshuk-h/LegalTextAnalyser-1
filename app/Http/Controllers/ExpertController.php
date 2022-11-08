@@ -5,6 +5,7 @@ use Hash;
 use App\Models\Experts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 class ExpertController extends Controller
 {
@@ -32,7 +33,9 @@ class ExpertController extends Controller
         //login
         auth()->login($expert);
 
-        return redirect("/")->with('message','User created and logged In.');
+        event(new Registered($expert));
+
+        return redirect("/email/verify")->with('message','User created and logged In.');
     }
 
     //login form for expert

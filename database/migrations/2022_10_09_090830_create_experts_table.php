@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('institution_name',80);
             $table->string('reg_num',50)->unique();
             $table->string('password');
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }
