@@ -24,12 +24,12 @@
             @enderror
         </div>
 
-        {{-- <div class="rmcontainer">
-            <input id="rm" type="checkbox" name="rememberme">
-            <label for="rm"> Remember me</label>
+        <div class="rmcontainer">
+            {{-- <input id="rm" type="checkbox" name="rememberme">
+            <label for="rm"> Remember me</label> --}}
 
-            <span class="fp"><a href="#">Forgot Password?</a></span>
-        </div> --}}
+            <span class="fp"><a href="{{route('password.request')}}">Forgot Password?</a></span>
+        </div>
 
         <div class="inputcontainer">
             <button type="submit"  class="loginbtn">Log In</button>
