@@ -6,7 +6,7 @@
         <div class="lhead">Register with LTA</div>
         <div class="lsubhead">Please fill your information</div>
         
-        <form action="/expert" method="POST">
+        <form action="/register" method="POST">
             @csrf
             
             <div class="inputcontainer">

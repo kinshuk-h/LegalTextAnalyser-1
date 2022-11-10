@@ -11,15 +11,15 @@ use App\Models\Classifications;
 use App\Models\ClassifiedLabels;
 use Illuminate\Support\Facades\DB;
 
-class ParagraphController extends Controller
+class AnnotationController extends Controller
 {
     //paragraph allocation view
-    public function index(){
+    public function annotationIndex(){
         return view("paragraph.index");
     }
 
     //allocate a paragraph
-    public function create(){
+    public function allocateParagraph(){
         $id=auth()->user()->id;
         $labels= Labels::all();
         DB::select("CALL update_paragraph_labeling_status_procedure()");
@@ -67,7 +67,7 @@ class ParagraphController extends Controller
     }
 
     //label a paragraph
-    public function store(Request $request){
+    public function storeLabels(Request $request){
         DB::select("CALL update_paragraph_labeling_status_procedure()");
         
         //check status if times_up then no label else
@@ -119,7 +119,7 @@ class ParagraphController extends Controller
     }
 
     //bypass labeling
-    public function update(Request $request){
+    public function bypassParagraph(Request $request){
         DB::select("CALL update_paragraph_labeling_status_procedure()");
         
         //check status if times_up then no label else

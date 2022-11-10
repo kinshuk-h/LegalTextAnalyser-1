@@ -7,7 +7,7 @@
     <div class="lhead">Login</div>
     <div class="lsubhead">Please login to continue</div>
 
-    <form action="/authenticate" method="POST">
+    <form action="/login" method="POST">
         @csrf
         
         <div class="inputcontainer">

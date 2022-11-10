@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        //Trigger for safety purposes only para allocation not more than 5 is managed in ParagraphController
+        //Trigger for safety purposes only para allocation not more than 5 is managed in AnnotationController
         DB::unprepared('
             DROP TRIGGER IF EXISTS validate_para_allocation_trigger;
 

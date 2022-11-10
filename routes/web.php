@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Auth\Events\PasswordReset;
-use App\Http\Controllers\ExpertController;
-use App\Http\Controllers\ParagraphController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\AnnotationController;
+use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\EmailVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,102 +18,48 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//Routes for everyone (guest or authenticated)
+Route::get('/', function () {   return view('home');    });
+Route::get('/aboutus', function () {    return view('aboutus'); });
 
-//Forgot Password
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
-})->middleware('guest')->name('password.request');
+// logout
+Route::post('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::post('/forgot-password', function (Request $request) {
-    $request->validate(['email' => 'required|email']);
- 
-    $status = Password::sendResetLink(
-        $request->only('email')
-    );
- 
-    return $status === Password::RESET_LINK_SENT
-                ? back()->with(['status' => __($status)])
-                : back()->withErrors(['email' => __($status)]);
-})->middleware('guest')->name('password.email');
+Route::group(['middleware' => 'guest'], function () {
+    // login
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [LoginController::class, 'login']);
 
-Route::get('/reset-password/{token}', function ($token) {
-    return view('auth.reset-password', ['token' => $token]);
-})->middleware('guest')->name('password.reset');
-
-Route::post('/reset-password', function (Request $request) {
-    $request->validate([
-        'token' => 'required',
-        'email' => 'required|email',
-        'password' => 'required|min:8|confirmed',
-    ]);
- 
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function ($user, $password) {
-            $user->forceFill([
-                'password' => Hash::make($password)
-            ])->setRememberToken(Str::random(60));
- 
-            $user->save();
- 
-            event(new PasswordReset($user));
-        }
-    );
- 
-    return $status === Password::PASSWORD_RESET
-                ? redirect()->route('login')->with('status', __($status))
-                : back()->withErrors(['email' => [__($status)]]);
-})->middleware('guest')->name('password.update');
-
-// Email Verification
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
- 
-    return redirect('/');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
- 
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-// Other Routes
-
-Route::get('/', function () {
-    return view('home');
+    // registration
+    Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('register', [RegisterController::class, 'register']);
+    
+    //Forgot Password
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 });
 
-Route::get('/aboutus', function () {
-    return view('aboutus');
+Route::group(['prefix' => 'email'], function() {
+    // Email Verification
+    Route::get('/verify', [EmailVerificationController::class,'showVerificationNotice'])->middleware('auth')->name('verification.notice');
+    Route::get('/verify/{id}/{hash}', [EmailVerificationController::class,'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
+    Route::post('/verification-notification', [EmailVerificationController::class,'sendLink'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified']);
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::group(['prefix' => 'paragraph'], function() {
+        //labeling paragraph
+        Route::get('/', [AnnotationController::class, 'annotationIndex']);
+        Route::get('/allocate', [AnnotationController::class, 'allocateParagraph']);
+        Route::post('/label', [AnnotationController::class, 'storeLabels']);
+        Route::post('/bypass', [AnnotationController::class, 'bypassParagraph']);
+    });
 
-Route::get('/dashboard/tasks', function () {
-    return view('db.dbtasks');
-})->middleware(['auth', 'verified']);
-
-Route::get('/dashboard/stats', function () {
-    return view('db.dbstats');
-})->middleware(['auth', 'verified']);
-
-Route::get('/register', [ExpertController::class, 'create'])->middleware('guest');
-Route::post('/expert', [ExpertController::class, 'store'])->middleware('guest');
-
-Route::get('/login', [ExpertController::class, 'login'])->name('login')->middleware('guest');
-Route::post('/authenticate', [ExpertController::class, 'authenticate'])->middleware('guest');
-
-Route::post('/logout', [ExpertController::class, 'logout'])->middleware(['auth', 'verified']);
-
-//labeling
-Route::get('/paragraph', [ParagraphController::class, 'index'])->middleware(['auth', 'verified']);
-Route::get('/paragraph/allocate', [ParagraphController::class, 'create'])->middleware(['auth', 'verified']);
-Route::post('/paragraph/label', [ParagraphController::class, 'store'])->middleware(['auth', 'verified']);
-Route::post('/paragraph/bypass', [ParagraphController::class, 'update'])->middleware(['auth', 'verified']);
+    Route::group(['prefix' => 'dashboard'], function() {
+        Route::get('/', function () {  return view('dashboard'); });
+        Route::get('/tasks', function () {  return view('db.dbtasks');  });
+        Route::get('/stats', function () {  return view('db.dbstats');  });
+    });
+});
