@@ -7,7 +7,7 @@
     <div class="maincont">
         <div class="leftsec">
             <div class="hi_name"> Hi, <span class="user_name">{{auth()->user()->name}}</span></div>
-            <div class="subsec"> <a href='/dashboard'>Account</a> </div>
+            <div class="subsec"> <a href='/dashboard/profile'>Account</a> </div>
             <div class="subsec"> <a href='/dashboard/tasks'>Tasks</a> </div>
             <div class="subsec"> <a href='/dashboard/stats'>Statistics</a> </div>
         </div>

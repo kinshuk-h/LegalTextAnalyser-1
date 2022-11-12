@@ -6,6 +6,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AnnotationController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\EditUserDetailsController;
 use App\Http\Controllers\EmailVerificationController;
 
 /*
@@ -59,6 +60,13 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::group(['prefix' => 'dashboard'], function() {
         Route::get('/', function () {  return view('dashboard'); });
+
+        Route::group(['prefix' => 'profile'], function() {
+            Route::get('/', [EditUserDetailsController::class, 'editDetails']);
+            Route::put('details', [EditUserDetailsController::class, 'updateDetails']);
+            Route::put('password', [EditUserDetailsController::class, 'updatePassword']);
+        });
+
         Route::get('/tasks', function () {  return view('db.dbtasks');  });
         Route::get('/stats', function () {  return view('db.dbstats');  });
     });
