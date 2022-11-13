@@ -1,0 +1,17 @@
+html {
+    scroll-behavior: smooth;
+  }
+
+#topArrow {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  outline: none;
+  background-color: rgb(212, 210, 210);
+  color: white;
+  cursor: pointer;
+  padding: 0px;
+  border-radius: 40px;
+}

@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     });
 
     Route::group(['prefix' => 'dashboard'], function() {
-        Route::get('/', function () {  return view('dashboard'); });
+        // Route::get('/', function () {  return view('dashboard'); });
 
         Route::group(['prefix' => 'profile'], function() {
             Route::get('/', [EditUserDetailsController::class, 'editDetails']);
@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::put('password', [EditUserDetailsController::class, 'updatePassword']);
         });
 
-        Route::get('/tasks', function () {  return view('db.dbtasks');  });
-        Route::get('/stats', function () {  return view('db.dbstats');  });
+        Route::get('/tasks', function () {  return view('dashboard.tasks.index');  });
+        Route::get('/stats', function () {  return view('dashboard.activity.index');  });
     });
 });

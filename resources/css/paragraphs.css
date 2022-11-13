@@ -1,0 +1,71 @@
+.section-title{
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1.3em;
+}
+
+.modal-card-body{
+    font-size: 15px;
+}
+
+.button
+{
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1em;
+}
+  
+.content input{
+    margin: 0px 5px 0px 0px;
+  }
+  
+.content label{
+    margin: 10px;
+}
+
+.footer{
+    padding: 1rem;
+}
+
+.checkitems {
+    display: flex;
+    height: 100%;
+    align-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.checkitem {
+    padding: 0.5rem 0.1rem;
+}
+
+.scrollable {
+    overflow-y: auto;
+    max-height: 40vh;
+}
+
+.rows {
+    padding: 1.5rem 0;
+    display: flex;
+    gap: 1rem;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.rows > * {
+    flex-grow: 1;
+}
+.rows > .is-fullheight {
+    flex-grow: 999;
+}
+
+@media only screen and (max-width: 48rem) {
+    .scrollable {
+        max-height: 100% !important;
+        overflow-y: visible;
+    }
+}
+@media only screen and (max-width: 58rem) {
+    .scrollable {
+        max-height: 80vh;
+    }
+}

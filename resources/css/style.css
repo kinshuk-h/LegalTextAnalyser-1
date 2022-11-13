@@ -1,0 +1,55 @@
+html {
+    overflow-y: auto;
+}
+.hero-body{
+    background-position: right;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+@media (max-width: 480px) {
+    .hero-body {
+        background-color: white;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+    .hero-body {
+        background-color: white;
+    }
+}
+
+@media (min-width: 1274px) {
+    .hero-body {
+	    background-image:  url('assets/images/law.png');
+   }
+}
+
+#ltamain{
+    background-image: linear-gradient(to right top, #3d0095, #c00075, #f55754, #ffb052, #f4ff91);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.footer{
+    padding: 1rem;
+}
+
+/* This only changes this particular animation duration */
+
+.animate__animated.animate__fadeInUp {
+    --animate-duration: 2s;
+}
+
+.animate__animated.animate__slideInLeft {
+    font-weight: bolder;
+    font-size: 2em;
+  --animate-duration: 1s;
+}
+
+.animate__animated.animate__fadeInDown {
+    --animate-duration: 2s;
+}
+
+
+

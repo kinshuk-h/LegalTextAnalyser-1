@@ -1,0 +1,32 @@
+html {
+    overflow-y: auto;
+}
+.hero-body{
+    background-position: right;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+@media (max-width: 480px) {
+    .hero-body {
+        background-color: white;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+    .hero-body {
+        background-color: white;
+    }
+}
+
+@media (min-width: 1274px) {
+    .hero-body {
+	    background-image: url(../images/image.annotations.jpg);
+   }
+}
+
+.footer{
+    padding: 1rem;
+}
+
+

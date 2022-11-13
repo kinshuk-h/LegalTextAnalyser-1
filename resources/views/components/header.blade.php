@@ -1,31 +1,51 @@
-<style> <?php include public_path('css/header_css.css') ?> </style>
-<div class="headerbox">
-	<div class="logo">
-		<a href="/">Legal Text Analyser</a>
-	</div>
-	<div class="linkbox">
-		
-		@auth
-		  	<span>
-			  Welcome {{auth()->user()->name}}
-			</span>
+<a id="topArrow" href="#top">
+	<span class="icon is-large">
+		<i class="fa fas fa-2x fa-arrow-circle-up" aria-hidden="true"></i>
+	</span>
+</a>
 
-			<a href="/paragraph">Paragraphs</a>		
-			<a href="/dashboard">Dashboard</a>	
+<header>
+	<nav class="navbar has-shadow">
+		<div class="container">
+			<div class="navbar-brand">
+				<a class="navbar-item" href="/">
+					<img src="/images/Lta.png" alt="Logo">
+				</a>
+				<span class="navbar-burger" data-target="navbarMenuHeroC">
+					<span></span>
+					<span></span>
+					<span></span>
+				</span>
+			</div>
+			<div id="navbarMenuHeroC" class="navbar-menu">
+				<div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+					<a class="navbar-item has-text-weight-bold" href="/">Home</a>
+					<a class="navbar-item" href="/aboutus">About Us</a>
 
-			<form method="POST" action="/logout">
-				@csrf
-				<button type="submit">Logout</button>
-			</form>
-		@else
-			<a href="/register" >Register</a>
-			<a href="/login" >Login</a>
-		@endauth
+					@auth
+						<a class="navbar-item" href="/paragraph">Annotations</a>		
+						<a class="navbar-item" href="/dashboard/profile">Dashboard</a>	
+					@endauth
+				</div>
+				<div class="navbar-end">
+					<div class="navbar-item">
+						<div class="buttons">
+							{{-- <a class="button is-primary" href="signup.html"><strong>GET STARTED</strong></a> --}}
 
-		<a href="/aboutus">About Us</a>
-		
-	</div>
-	<button class="get-started-btn-h">
-		GET STARTED
-	</button>
-</div>
+							@auth
+								<form method="POST" action="/logout">
+									@csrf
+									<button class="button is-light" type="submit">Logout<i class="material-icons"
+										aria-hidden="true">exit_to_app</i></button>
+								</form>
+							@else
+								<a class="button is-light" href="/register" >Register</a>
+								<a class="button is-light" href="/login" >Login</a>
+							@endauth
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+</header>

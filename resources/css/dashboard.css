@@ -1,0 +1,28 @@
+.side-bar-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+.side-bar {
+    margin: 1rem;
+    flex-basis: 15rem;
+    flex-grow: 1;
+}
+.content-area {
+    flex-grow: 999;
+    flex-basis: 0;
+    min-inline-size: 50%;
+}
+
+.scrollable {
+    /* overflow-y: auto; */
+    max-height: 1vh;
+}
+
+.more{
+    display: none;
+ }
+
+.footer{
+    padding: 1rem;
+}
