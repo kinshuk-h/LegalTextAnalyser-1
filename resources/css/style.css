@@ -19,9 +19,9 @@ html {
     }
 }
 
-@media (min-width: 1274px) {
+@media (min-width: 1180px) {
     .hero-body {
-	    background-image:  url('assets/images/law.png');
+	    background-image:  url('/public/images/law.png');
    }
 }
 
@@ -29,10 +29,6 @@ html {
     background-image: linear-gradient(to right top, #3d0095, #c00075, #f55754, #ffb052, #f4ff91);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-.footer{
-    padding: 1rem;
 }
 
 /* This only changes this particular animation duration */

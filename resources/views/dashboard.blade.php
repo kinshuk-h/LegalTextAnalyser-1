@@ -29,6 +29,12 @@
                     </span>
                     Profile
                 </a>
+                <a class="panel-block" href="/dashboard/change-password">
+                    <span class="panel-icon">
+                        <i class="fa fas fa-lock" aria-hidden="true"></i>
+                    </span>
+                    Change Password
+                </a>
                 <a class="panel-block" href="/dashboard/tasks">
                     <span class="panel-icon">
                         <i class="fa fas fa-book" aria-hidden="true"></i>

@@ -1,2 +1,10 @@
 @import 'bulma/css/bulma.min.css';
 @import 'bulma-extensions/dist/css/bulma-extensions.min.css';
+
+.footer{
+    /* position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%; */
+    padding: 1rem;
+}

@@ -63,8 +63,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
         Route::group(['prefix' => 'profile'], function() {
             Route::get('/', [EditUserDetailsController::class, 'editDetails']);
-            Route::put('details', [EditUserDetailsController::class, 'updateDetails']);
-            Route::put('password', [EditUserDetailsController::class, 'updatePassword']);
+            Route::put('/', [EditUserDetailsController::class, 'updateDetails']);
+        });
+
+        Route::group(['prefix' => 'change-password'], function() {
+            Route::get('/', [EditUserDetailsController::class, 'editPassword']);
+            Route::put('/', [EditUserDetailsController::class, 'updatePassword']);
         });
 
         Route::get('/tasks', function () {  return view('dashboard.tasks.index');  });

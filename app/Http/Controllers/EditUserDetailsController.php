@@ -26,6 +26,10 @@ class EditUserDetailsController extends Controller
         return redirect()->back()->with('message', 'Your details successfully updated.');
     }
 
+    public function editPassword(Request $request){
+        return view("dashboard.change_password.index");
+    }
+
     public function updatePassword(Request $request){
         $formFields=$request->validate([
             'old_password' => 'required|min:8|max:255',

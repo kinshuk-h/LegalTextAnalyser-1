@@ -19,14 +19,10 @@ html {
     }
 }
 
-@media (min-width: 1274px) {
+@media (min-width: 1180px) {
     .hero-body {
-	    background-image: url(../images/image.annotations.jpg);
+	    background-image: url('/public/images/image.annotations.jpg');
    }
-}
-
-.footer{
-    padding: 1rem;
 }
 
 

@@ -24,7 +24,9 @@
         
         <x-header />
 
-        @yield('content')
+        <div style="min-height: 100vh">
+            @yield('content')
+        </div>
 
         <x-footer />
 
