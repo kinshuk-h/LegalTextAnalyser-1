@@ -8,6 +8,7 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\EditUserDetailsController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\DashboardTasksManageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +72,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::put('/', [EditUserDetailsController::class, 'updatePassword']);
         });
 
-        Route::get('/tasks', function () {  return view('dashboard.tasks.index');  });
+        Route::get('/tasks', [DashboardTasksManageController::class, 'showTasks']);
         Route::get('/stats', function () {  return view('dashboard.activity.index');  });
     });
 });
