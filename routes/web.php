@@ -72,7 +72,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::put('/', [EditUserDetailsController::class, 'updatePassword']);
         });
 
-        Route::get('/tasks', [DashboardTasksManageController::class, 'showTasks']);
+        Route::group(['prefix' => 'tasks'], function() {
+            Route::get('/', [DashboardTasksManageController::class, 'showAllTasks']);
+            Route::get('/filter', [DashboardTasksManageController::class, 'showFilteredTasks']);
+            Route::get('/search', [DashboardTasksManageController::class, 'showTasksBySearch']);
+        });
         Route::get('/stats', function () {  return view('dashboard.activity.index');  });
     });
 });

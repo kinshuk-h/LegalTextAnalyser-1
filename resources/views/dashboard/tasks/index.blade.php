@@ -1,6 +1,7 @@
 @extends('dashboard')
 
 @section('dash-ui')
+
     <article class="content-area ">
         <article class="container">
             <section class="block">
@@ -14,35 +15,36 @@
 
                         <div class="level-right mr-1">
                             <div class="control has-icons-left mr-2">
-                                <div class="select">
-                                    <select>
+                                <form method="GET" action='/dashboard/tasks/filter' class="select">
+                                    <select onchange="this.form.submit()" name="filterBy">
                                         <option disabled selected hidden>Filter by..</option>
-                                        <option>All</option>
-                                        <option>Labelled</option>
-                                        <option>Modified</option>
-                                        <option>Bypassed</option>
-                                        <option>Time's Up</option>
+                                        <option {{ $selected == 'all' ? "selected" : "" }} value="all">All</option>
+                                        <option {{ $selected == 'labeled' ? "selected" : "" }} value="labeled">Labelled</option>
+                                        <option {{ $selected == 'modified' ? "selected" : "" }} value="modified">Modified</option>
+                                        <option {{ $selected == 'bypass' ? "selected" : "" }} value="bypass">Bypassed</option>
+                                        <option {{ $selected == 'timesup' ? "selected" : "" }} value="timesup">Time's Up</option>
                                         @foreach ($labels as $label)
-                                            <option>{{$label['label_name']}}</option>
+                                            <option {{ $selected == $label['label_num'] ? "selected" : "" }} value={{$label['label_num']}}>{{$label['label_name']}}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </form>
                                 <div class="icon is-left">
                                     <i class="fa fas fa-sort"></i>
                                 </div>
                             </div>
 
 
-                            <div class="field has-addons">
+                            <form method="GET" action='/dashboard/tasks/search' class="field has-addons">
+
                                 <div class="control is-fluid">
-                                    <input class="input" type="text" placeholder="Search by Name">
+                                    <input class="input" type="search" name="searchBy" value="{{Request::get('searchBy')}}" placeholder="Search by Title/Case No./Content" required>
                                 </div>
                                 <div class="control">
-                                    <a class="button is-grey">
+                                    <button type="submit" class="button is-grey">
                                         Search
-                                    </a>
+                                    </button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </nav>
                 </section>
