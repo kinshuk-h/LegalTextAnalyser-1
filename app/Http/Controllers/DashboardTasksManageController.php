@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Labels;
 use Illuminate\Http\Request;
 use App\Models\Classifications;
+use App\Models\ClassifiedLabels;
 use Illuminate\Support\Facades\DB;
 
 class DashboardTasksManageController extends Controller
@@ -74,7 +75,10 @@ class DashboardTasksManageController extends Controller
                 $result=Classifications::getClassifiedParagraphsFullDetails()
                     ->where('classifications.e_id','=', $id)
                     ->groupBy(['classifications.doc_id','classifications.paragraph_num'])
-                    ->having('label_num', 'like' ,'%'.$formFields['filterBy'].'%')
+                    ->having('label_num', '=' , $formFields['filterBy'])
+                    ->orHaving('label_num', 'like' , $formFields['filterBy'].',%')
+                    ->orHaving('label_num', 'like' ,'%,'.$formFields['filterBy'].',%')
+                    ->orHaving('label_num', 'like' ,'%,'.$formFields['filterBy'] )
                     ->paginate(2);
     
                 return view("dashboard.tasks.index",[
@@ -112,6 +116,65 @@ class DashboardTasksManageController extends Controller
             ]);
         } catch(\Exception $e)
         {
+            return back()->with('message','Something bad happened ;)');
+        }
+    }
+
+    public function modifyLabels(Request $request){
+        DB::select("CALL update_paragraph_labeling_status_procedure()");
+        
+        $id=auth()->user()->id;
+        //validate input
+        $inputs=$request->validate([
+            'doc_id' => 'required',
+            'paragraph_num' => 'required',
+            'labels' => 'required|array'
+        ]);
+
+        $alloted=Classifications::where([ 
+            'e_id'=> $id,'doc_id'=>$inputs['doc_id'],
+            'paragraph_num'=>$inputs['paragraph_num'], 
+            'status'=> 'labeled' ])->orWhere(['status'=> 'modified'])->first();
+
+        //redirect to paragraph
+        if($alloted==null){
+            return back()->with('message','Wrong Inputs for modifying labels.');
+        }
+        
+        DB::beginTransaction();
+
+        try{
+            //update status of paragraph
+            Classifications::where([
+                'e_id' => $alloted->e_id,
+                'doc_id' => $alloted->doc_id,
+                'paragraph_num' => $alloted->paragraph_num])->update([
+                    'status' => 'modified']);
+            
+            //delete previous labels
+            ClassifiedLabels::where([
+                'e_id' => $alloted->e_id,
+                'doc_id' => $alloted->doc_id,
+                'paragraph_num' => $alloted->paragraph_num])->delete();
+
+            //store the labels
+            $labels=$inputs['labels'];
+            $entries=[];
+            foreach($labels as $label)
+                $entries[]=[
+                    'e_id' => $alloted->e_id,
+                    'doc_id' => $alloted->doc_id,
+                    'paragraph_num' => $alloted->paragraph_num,
+                    'label_num' => $label,
+                ];
+            
+            ClassifiedLabels::insert($entries);
+
+            DB::commit();
+            return redirect("/dashboard/tasks")->with('message','Paragraph Labels are modified.');
+        } catch(\Exception $e)
+        {
+            DB::rollback();
             return back()->with('message','Something bad happened ;)');
         }
     }

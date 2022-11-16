@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('paragraph_num')->unsigned();
             $table->timestamp('allocation_time')->useCurrent();
             $table->timestamp('labeled_time')->nullable();
-            $table->enum('status', array('alloted', 'labeled' , 'timesup', 'bypass'))->default('alloted');
+            $table->enum('status', array('alloted', 'labeled' , 'timesup', 'bypass','modified'))->default('alloted');
 
             $table->primary(['e_id','doc_id', 'paragraph_num']);
             $table->foreign('e_id')->references('id')->on('experts')->onDelete('cascade')->onUpdate('cascade');

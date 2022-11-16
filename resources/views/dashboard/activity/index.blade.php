@@ -11,76 +11,35 @@
         </section>
         <article class="container is-fluid mt-1 ml-1 mr-1 mb-0">
             <section class="columns is-vcentered is-centered is-multiline mt-2">
-                <div class="column is-3-desktop is-3">
-                    <div class="card">
-                        <div class="card-content has-text-centered">
-                            <h1 class="has-text-weight-semibold is-size-5">Paragraphs Alloted</h1>
-                            <h1 class="is-size-6">12</h1>
+                
+                @foreach($counts_data as $data)
+                    @if (strcmp($data->status,'alloted')!=0)
+                        <div class="column is-3-desktop is-3">
+                            <div class="card">
+                                <div class="card-content has-text-centered">
+                                    <h2 class="has-text-weight-semibold is-size-5">
+                                        {{  ucwords($data->status) }} Paragraphs
+                                        
+                                    </h2>
+                                    <h1 class="is-size-6">
+                                        {{ $data->count }}
+                                    </h1>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="column is-3-desktop is-3">
-                    <div class="card">
-                        <div class="card-content has-text-centered">
-                            <h2 class="has-text-weight-semibold is-size-5">Paragraphs Labelled</h2>
-                            <h1 class="is-size-6">12</h1>
-                        </div>
-                    </div>
-                </div>
+                    @endif
+                @endforeach
 
-                <div class="column is-3-desktop is-3">
-                    <div class="card">
-                        <div class="card-content has-text-centered">
-                            <h2 class="has-text-weight-semibold is-size-5">Paragraphs Bypassed</h2>
-                            <h1 class="is-size-6">12</h1>
+                @foreach($times_data as $key => $value)
+                    <div class="column is-3-desktop is-3">
+                        <div class="card">
+                            <div class="card-content has-text-centered">
+                                <h1 class="has-text-weight-semibold is-size-5">{{$key}}</h1>
+                                <h1 class="is-size-6">{{$value}}</h1>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="column is-3-desktop is-3">
-                    <div class="card">
-                        <div class="card-content has-text-centered">
-                            <h2 class="has-text-weight-semibold is-size-5">Paragraphs Modified</h2>
-                            <h1 class="is-size-6">12</h1>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column is-3-desktop is-3">
-                    <div class="card">
-                        <div class="card-content has-text-centered">
-                            <h1 class="has-text-weight-semibold is-size-5">Total Labelling Time</h1>
-                            <h1 class="is-size-6">1 hr 12 mins</h1>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column is-3-desktop is-3">
-                    <div class="card">
-                        <div class="card-content has-text-centered">
-                            <h1 class="has-text-weight-semibold is-size-5">Average Labelling Time</h1>
-                            <h1 class="is-size-6">1 hr 12 mins</h1>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column is-3-desktop is-3">
-                    <div class="card">
-                        <div class="card-content has-text-centered">
-                            <h1 class="has-text-weight-semibold is-size-5">Minimum Labelling Time</h1>
-                            <h1 class="is-size-6">1 hr 12 mins</h1>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column is-3-desktop is-3">
-                    <div class="card">
-                        <div class="card-content has-text-centered">
-                            <h1 class="has-text-weight-semibold is-size-5">Maximum Labelling Time</h1>
-                            <h1 class="is-size-6">1 hr 12 mins</h1>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
 
             </section>
             <section class="columns is-vcentered is-centered is-multiline mt-6">

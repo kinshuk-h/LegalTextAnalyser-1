@@ -1,6 +1,15 @@
 @extends('dashboard')
 
 @section('dash-ui')
+    @push('styles')
+        <link href="{{ mix('resources/css/paragraphs.css') }}" rel="stylesheet">
+    @endpush
+
+    <script>
+        if('{{Session::has('message')}}'){
+            alert('{{Session::get('message')}}');
+        }
+    </script>
 
     <article class="content-area ">
         <article class="container">
@@ -82,12 +91,16 @@
                                 </div>
                             </div>
                             <div class="column is-narrow">
-                                <button class="button is-primary">
-                                    <span class="icon is-small">
-                                        <i class="fa fas fa-edit"></i>
-                                    </span>
-                                    <span>Modify</span>
-                                </button>
+                                @if($task->label_num !== null)
+                                    <button class="button is-primary js-modal-trigger" 
+                                    data-target={{"label_details-".$task->doc_id."-".$task->paragraph_num}}>
+                                        <span class="icon is-small">
+                                            <i class="fa fas fa-edit"></i>
+                                        </span>
+                                        <span>Modify</span>
+                                    </button>
+                                @endif
+
                                 <button class="button is-info has-text-white has-text-weight-bold js-modal-trigger"
                                 data-target={{"modal_details-".$task->doc_id."-".$task->paragraph_num}}>
                                     <span class="icon is-small">
@@ -98,6 +111,48 @@
                             </div>
                         </div>
                     </section>
+                    {{-- Modify Modal --}}
+                    @if($task->label_num !== null)
+                        <div class="modal p-2" id={{"label_details-".$task->doc_id."-".$task->paragraph_num}}>
+                            <div class="modal-background"></div>
+                            <div class="modal-card">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title has-text-info-dark">Labels</p>
+                                    <button class="delete" aria-label="close"></button>
+                                </header>
+                                <section class="modal-card-body has-text-left">
+                                    <p class="subtitle has-text-info">You can select multiple labels</p>
+                                    <form action="/dashboard/tasks/modify-labels" method="POST" id="labelcontainer" class="content is-fullheight">
+                                        @csrf
+                                        @method('PUT')
+
+                                        
+                                    <input type="number" name="doc_id" value={{$task->doc_id}} hidden>
+                                    
+                                    <input type="number" name="paragraph_num" value={{$task->paragraph_num}} hidden>
+
+                                        <div class="content rows">
+                                            <div class="checkitems">
+                                                @foreach ($labels as $label)
+                                                    <div class="checkitem">
+                                                        <input type="checkbox" id={{"label-".$label['label_num']}} class="is-checkradio is-link"  value={{$label['label_num']}}
+                                                            name="labels[]" {{ in_array($label['label_num'] , explode(",",$task->label_num)) ? "checked" : "" }}/>
+                                                        <label for={{"label-".$label['label_num']}}><span
+                                                                class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-info"
+                                                                data-tooltip="Tooltip content&#10;tooltip content">{{$label['label_name']}}</span></label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="buttons is-centered">
+                                            <button class="button is-primary js-modal-trigger" id="para_annotate"
+                                                data-target="paragraph1-modal" type="submit">SUBMIT</button>
+                                        </div>
+                                    </form>
+                                </section>
+                            </div>
+                        </div>
+                    @endif
                     <!-- MODAL_DETAILS -->
                     <div class="modal p-2" id={{"modal_details-".$task->doc_id."-".$task->paragraph_num}}>
                         <div class="modal-background"></div>

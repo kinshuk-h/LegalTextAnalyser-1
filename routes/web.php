@@ -7,6 +7,7 @@ use App\Http\Controllers\AnnotationController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\EditUserDetailsController;
+use App\Http\Controllers\DashboardActivityController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\DashboardTasksManageController;
 
@@ -76,7 +77,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/', [DashboardTasksManageController::class, 'showAllTasks']);
             Route::get('/filter', [DashboardTasksManageController::class, 'showFilteredTasks']);
             Route::get('/search', [DashboardTasksManageController::class, 'showTasksBySearch']);
+            Route::put('/modify-labels', [DashboardTasksManageController::class, 'modifyLabels']);
         });
-        Route::get('/stats', function () {  return view('dashboard.activity.index');  });
+
+        Route::get('/stats', [DashboardActivityController::class, 'showActivity']);
     });
 });
