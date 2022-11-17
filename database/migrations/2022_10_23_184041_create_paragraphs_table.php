@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('paragraph_num')->unsigned();
             $table->longText('content');
             $table->integer('page');
+            $table->string('reference');
             $table->foreign('doc_id')->references('doc_id')->on('documents')->onDelete('cascade')->onUpdate('cascade');
             $table->primary(['doc_id', 'paragraph_num']);
             $table->timestamps();
