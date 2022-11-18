@@ -26,7 +26,9 @@ class DashboardTasksManageController extends Controller
                 ->where('title', 'like' ,'%'.$formFields['searchBy'].'%')
                 ->orWhere('case_number', 'like' ,'%'.$formFields['searchBy'].'%')
                 ->orWhere('content', 'like' ,'%'.$formFields['searchBy'].'%')
-                ->groupBy(['classifications.doc_id','classifications.paragraph_num'])
+                ->groupBy(['classifications.doc_id','classifications.paragraph_num'
+                ,'allocation_time','labeled_time','status','content','page','case_number',
+                'title','date', 'document_link'])
                 ->having('status', '!=', 'alloted')
                 ->paginate(2);
 
@@ -56,7 +58,9 @@ class DashboardTasksManageController extends Controller
                 $result=Classifications::getClassifiedParagraphsFullDetails()
                     ->where('classifications.e_id','=', $id)
                     ->where('classifications.status','=', $formFields['filterBy'])
-                    ->groupBy(['classifications.doc_id','classifications.paragraph_num'])
+                    ->groupBy(['classifications.doc_id','classifications.paragraph_num'
+                    ,'allocation_time','labeled_time','status','content','page','case_number',
+                    'title','date', 'document_link'])
                     ->paginate(2);
     
                 return view("dashboard.tasks.index",[
@@ -74,7 +78,9 @@ class DashboardTasksManageController extends Controller
                 //find the paragraphs which expert has labeled as a label_num
                 $result=Classifications::getClassifiedParagraphsFullDetails()
                     ->where('classifications.e_id','=', $id)
-                    ->groupBy(['classifications.doc_id','classifications.paragraph_num'])
+                    ->groupBy(['classifications.doc_id','classifications.paragraph_num'
+                    ,'allocation_time','labeled_time','status','content','page','case_number',
+                    'title','date', 'document_link'])
                     ->having('label_num', '=' , $formFields['filterBy'])
                     ->orHaving('label_num', 'like' , $formFields['filterBy'].',%')
                     ->orHaving('label_num', 'like' ,'%,'.$formFields['filterBy'].',%')
@@ -106,7 +112,9 @@ class DashboardTasksManageController extends Controller
             $result=Classifications::getClassifiedParagraphsFullDetails()
                 ->where('classifications.e_id','=', $id)
                 ->where('classifications.status','!=', 'alloted')
-                ->groupBy(['classifications.doc_id','classifications.paragraph_num'])
+                ->groupBy(['classifications.doc_id','classifications.paragraph_num'
+                ,'allocation_time','labeled_time','status','content','page','case_number',
+                'title','date', 'document_link'])
                 ->paginate(2);
 
             return view("dashboard.tasks.index",[

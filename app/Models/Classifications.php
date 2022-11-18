@@ -22,18 +22,9 @@ class Classifications extends Model
      */
     public static function getClassifiedParagraphsFullDetails()
     {
-        return DB::table('classifications')->selectRaw('ANY_VALUE(classifications.doc_id) as doc_id, 
-            ANY_VALUE(classifications.paragraph_num) as paragraph_num,
-            GROUP_CONCAT(label_num) as label_num,
-            ANY_VALUE(allocation_time) as allocation_time,
-            ANY_VALUE(labeled_time) as labeled_time,
-            ANY_VALUE(status) as status,
-            ANY_VALUE(content) as content,
-            ANY_VALUE(page) as page,
-            ANY_VALUE(case_number) as case_number,
-            ANY_VALUE(title) as title,
-            ANY_VALUE(date) as date,
-            ANY_VALUE(document_link) as document_link')
+        return DB::table('classifications')->selectRaw('classifications.doc_id,
+        classifications.paragraph_num,GROUP_CONCAT(label_num) as label_num, 
+        allocation_time,labeled_time,status,content,page,case_number,title,date, document_link')
         ->join('paragraphs', function($join){
             $join->on('classifications.doc_id', '=', 'paragraphs.doc_id')
             ->on('classifications.paragraph_num','=', 'paragraphs.paragraph_num');
