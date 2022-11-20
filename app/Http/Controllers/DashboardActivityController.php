@@ -23,9 +23,21 @@ class DashboardActivityController extends Controller
         SEC_TO_TIME(MAX(TIME_TO_SEC(TIMEDIFF(labeled_time,allocation_time)))) as \'Maximum Labelling Time\'')
         ->where('e_id','=', $id)->where('status','=', 'labeled')->get()->toArray();
 
+        $chart_1=DB::table('classifications')
+        ->selectRaw('date(labeled_time) as date,count(*) as count')
+        ->whereIn('status',['labeled','modified'])->where('e_id','=',$id)
+        ->groupBy('date')->orderBy('date','DESC')->take(7)->get()->toArray();
+
+        $chart_2=DB::table('classifications')
+        ->selectRaw('date(labeled_time) as date, SEC_TO_TIME(AVG(TIME_TO_SEC(TIMEDIFF(labeled_time,allocation_time)))) as average')
+        ->whereIn('status',['labeled','modified'])->where('e_id','=',$id)
+        ->groupBy('date')->orderBy('date','DESC')->take(7)->get()->toArray();
+
         return view('dashboard.activity.index',[
             'counts_data'=>$counts_data,
-            'times_data'=>(array)$times_data[0]
+            'times_data'=>(array)$times_data[0],
+            'chart_1'=> ['labels' => array_column($chart_1,'date') ,'data' =>array_column($chart_1,'count') ],
+            'chart_2'=> ['labels' => array_column($chart_2,'date') ,'data' =>array_column($chart_2,'average') ]
         ]);
     }
 }

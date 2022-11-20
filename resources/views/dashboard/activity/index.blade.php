@@ -14,7 +14,7 @@
                 
                 @foreach($counts_data as $data)
                     @if (strcmp($data->status,'alloted')!=0)
-                        <div class="column is-3-desktop is-3">
+                        <div class="column is-3-desktop is-5">
                             <div class="card">
                                 <div class="card-content has-text-centered">
                                     <h2 class="has-text-weight-semibold is-size-5">
@@ -31,7 +31,7 @@
                 @endforeach
 
                 @foreach($times_data as $key => $value)
-                    <div class="column is-3-desktop is-3">
+                    <div class="column is-3-desktop is-5">
                         <div class="card">
                             <div class="card-content has-text-centered">
                                 <h1 class="has-text-weight-semibold is-size-5">{{$key}}</h1>
@@ -43,34 +43,28 @@
 
             </section>
             <section class="columns is-vcentered is-centered is-multiline mt-6">
-                <div class="column is-4-desktop">
+                <div class="column is-5-desktop">
                     <div class="card">
                         <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img src="https://bulma.io/images/placeholders/1280x960.png"
-                                    alt="Placeholder image">
-                            </figure>
+                            <canvas id="chart_one"></canvas>
                         </div>
                         <div class="card-content">
                             <div class="content">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Phasellus nec iaculis mauris.
+                                Line Plot for number of paragraphs labelled per day
+                                for those 7 days from past in which labeling occurs.
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="column is-offset-2-desktop is-4-desktop">
+                <div class="column is-offset-1-desktop is-5-desktop">
                     <div class="card">
                         <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img src="https://bulma.io/images/placeholders/1280x960.png"
-                                    alt="Placeholder image">
-                            </figure>
+                            <canvas id="chart_two"></canvas>
                         </div>
                         <div class="card-content">
                             <div class="content">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Phasellus nec iaculis mauris.
+                                Line Plot for average labeling time per day for 
+                                those 7 days from past in which labeling occurs.
                             </div>
                         </div>
                     </div>
@@ -79,5 +73,21 @@
         </article>
     </article>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ mix('resources/js/charts.js') }}"></script>
+    <script>
+        makeChart(
+            {!! json_encode($chart_1['labels']) !!},
+            {!! json_encode($chart_1['data']) !!},
+            "#Paragraphs labeled/day(last 7 labeled dates)",
+            'chart_one'
+        );
+        
+        makeChart(
+            {!! json_encode($chart_2['labels']) !!},
+            {!! json_encode($chart_2['data']) !!}.map((time)=> new Date("0000-01-01 "+time)),
+            "average labeling time/day(last 7 labeled dates)",
+            'chart_two',true
+        );
+    </script>
 @endsection
