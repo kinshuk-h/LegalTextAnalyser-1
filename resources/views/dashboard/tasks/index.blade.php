@@ -60,150 +60,160 @@
             </section>
 
             <article class="container is-fluid p-1">
-                @foreach ($tasks as $task)
-                    <!-- Paragraphs -->
-                    <section class="box ">
-                        <section class="block">
-                            {{substr($task->content,0,81)}}
-                            <span class="dots">...</span>
-                            <span class="more">
-                                {{substr($task->content,81)}}
-                            </span>
-                            <button class="read is-text has-text-link p-0">
-                                <span>Read More</span>
-                            </button>
-                        </section>
-                        <div class="columns is-vcentered">
-                            <div class="column is-narrow">
-                                <span class="tag is-info is-light is-medium">
-                                    {{$task->status}}
+                @if ($tasks->total()>0)
+                    @foreach ($tasks as $task)
+                        <!-- Paragraphs -->
+                        <section class="box ">
+                            <section class="block">
+                                {{substr($task->content,0,81)}}
+                                <span class="dots">...</span>
+                                <span class="more">
+                                    {{substr($task->content,81)}}
                                 </span>
-                            </div>
-                            <div class="column">
-                                <div class="tags is-multiline">
+                                <button class="read is-text has-text-link p-0">
+                                    <span>Read More</span>
+                                </button>
+                            </section>
+                            <div class="columns is-vcentered">
+                                <div class="column is-narrow">
+                                    <span class="tag is-info is-light is-medium">
+                                        {{$task->status}}
+                                    </span>
+                                </div>
+                                <div class="column">
+                                    <div class="tags is-multiline">
+                                        @if($task->label_num !== null)
+                                            @foreach (explode(",",$task->label_num) as $label_num)
+                                                <span class="tag is-primary is-light is-medium">
+                                                    {{$labels[$label_num]['label_name']}}
+                                                </span>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="column is-narrow">
                                     @if($task->label_num !== null)
-                                        @foreach (explode(",",$task->label_num) as $label_num)
-                                            <span class="tag is-primary is-light is-medium">
-                                                {{$labels[$label_num]['label_name']}}
+                                        <button class="button is-primary js-modal-trigger" 
+                                        data-target={{"label_details-".$task->doc_id."-".$task->paragraph_num}}>
+                                            <span class="icon is-small">
+                                                <i class="fa fas fa-edit"></i>
                                             </span>
-                                        @endforeach
+                                            <span>Modify</span>
+                                        </button>
                                     @endif
+
+                                    <button class="button is-info has-text-white has-text-weight-bold js-modal-trigger"
+                                    data-target={{"modal_details-".$task->doc_id."-".$task->paragraph_num}}>
+                                        <span class="icon is-small">
+                                            <i class="fa fas fa-eye"></i>
+                                        </span>
+                                        <span>Paragraph Details</span>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="column is-narrow">
-                                @if($task->label_num !== null)
-                                    <button class="button is-primary js-modal-trigger" 
-                                    data-target={{"label_details-".$task->doc_id."-".$task->paragraph_num}}>
-                                        <span class="icon is-small">
-                                            <i class="fa fas fa-edit"></i>
-                                        </span>
-                                        <span>Modify</span>
-                                    </button>
-                                @endif
+                        </section>
+                        {{-- Modify Modal --}}
+                        @if($task->label_num !== null)
+                            <div class="modal p-2" id={{"label_details-".$task->doc_id."-".$task->paragraph_num}}>
+                                <div class="modal-background"></div>
+                                <div class="modal-card">
+                                    <header class="modal-card-head">
+                                        <p class="modal-card-title has-text-info-dark">Labels</p>
+                                        <button class="delete" aria-label="close"></button>
+                                    </header>
+                                    <section class="modal-card-body has-text-left">
+                                        <p class="subtitle has-text-info">You can select multiple labels</p>
+                                        <form action="/dashboard/tasks/modify-labels" method="POST" id="labelcontainer" class="content is-fullheight">
+                                            @csrf
+                                            @method('PUT')
 
-                                <button class="button is-info has-text-white has-text-weight-bold js-modal-trigger"
-                                data-target={{"modal_details-".$task->doc_id."-".$task->paragraph_num}}>
-                                    <span class="icon is-small">
-                                        <i class="fa fas fa-eye"></i>
-                                    </span>
-                                    <span>Paragraph Details</span>
-                                </button>
+                                            
+                                        <input type="number" name="doc_id" value={{$task->doc_id}} hidden>
+                                        
+                                        <input type="number" name="paragraph_num" value={{$task->paragraph_num}} hidden>
+
+                                            <div class="content rows">
+                                                <div class="checkitems">
+                                                    @foreach ($labels as $label)
+                                                        <div class="checkitem">
+                                                            <input type="checkbox" id={{"label-".$label['label_num']}} class="is-checkradio is-link"  value={{$label['label_num']}}
+                                                                name="labels[]" {{ in_array($label['label_num'] , explode(",",$task->label_num)) ? "checked" : "" }}/>
+                                                            <label for={{"label-".$label['label_num']}}><span
+                                                                    class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-info"
+                                                                    data-tooltip="Tooltip content&#10;tooltip content">{{$label['label_name']}}</span></label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            @error('labels')
+                                                <script>alert('{{ $message }}')</script>
+                                            @enderror
+
+                                            <div class="buttons is-centered">
+                                                <button class="button is-primary js-modal-trigger" id="para_annotate"
+                                                    data-target="paragraph1-modal" type="submit">SUBMIT</button>
+                                            </div>
+                                        </form>
+                                    </section>
+                                </div>
                             </div>
-                        </div>
-                    </section>
-                    {{-- Modify Modal --}}
-                    @if($task->label_num !== null)
-                        <div class="modal p-2" id={{"label_details-".$task->doc_id."-".$task->paragraph_num}}>
+                        @endif
+                        <!-- MODAL_DETAILS -->
+                        <div class="modal p-2" id={{"modal_details-".$task->doc_id."-".$task->paragraph_num}}>
                             <div class="modal-background"></div>
                             <div class="modal-card">
                                 <header class="modal-card-head">
-                                    <p class="modal-card-title has-text-info-dark">Labels</p>
+                                    <p class="modal-card-title has-text-info-dark">Paragraph Details</p>
                                     <button class="delete" aria-label="close"></button>
                                 </header>
                                 <section class="modal-card-body has-text-left">
-                                    <p class="subtitle has-text-info">You can select multiple labels</p>
-                                    <form action="/dashboard/tasks/modify-labels" method="POST" id="labelcontainer" class="content is-fullheight">
-                                        @csrf
-                                        @method('PUT')
-
-                                        
-                                    <input type="number" name="doc_id" value={{$task->doc_id}} hidden>
-                                    
-                                    <input type="number" name="paragraph_num" value={{$task->paragraph_num}} hidden>
-
-                                        <div class="content rows">
-                                            <div class="checkitems">
-                                                @foreach ($labels as $label)
-                                                    <div class="checkitem">
-                                                        <input type="checkbox" id={{"label-".$label['label_num']}} class="is-checkradio is-link"  value={{$label['label_num']}}
-                                                            name="labels[]" {{ in_array($label['label_num'] , explode(",",$task->label_num)) ? "checked" : "" }}/>
-                                                        <label for={{"label-".$label['label_num']}}><span
-                                                                class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-info"
-                                                                data-tooltip="Tooltip content&#10;tooltip content">{{$label['label_name']}}</span></label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                        <div class="buttons is-centered">
-                                            <button class="button is-primary js-modal-trigger" id="para_annotate"
-                                                data-target="paragraph1-modal" type="submit">SUBMIT</button>
-                                        </div>
-                                    </form>
+                                    <p class="subtitle has-text-info"><a href={{$task->document_link}}>Document Link</a></p>
+                                        <strong>Document Number: </strong><span>{{$task->doc_id}}</span><br>
+                                        <strong>Paragraph Number: </strong><span>{{$task->paragraph_num}}</span><br>
+                                        <strong>Case Number: </strong><span>{{$task->case_number}}</span><br>
+                                        <strong>Title: </strong><span>{{$task->title}}</span><br>
+                                        <strong>Page Number: </strong><span>{{$task->page}}</span><br>
+                                        <strong>Date of the Judgement: </strong><span>{{$task->date}}</span><br>
+                                        <strong>Allocation time: </strong><span>{{$task->allocation_time}}</span><br>
+                                        @if(strcmp($task->status,"labeled")==0)
+                                            <strong>Labeled time: </strong><span>{{$task->labeled_time}}</span><br>
+                                        @endif
                                 </section>
                             </div>
                         </div>
-                    @endif
-                    <!-- MODAL_DETAILS -->
-                    <div class="modal p-2" id={{"modal_details-".$task->doc_id."-".$task->paragraph_num}}>
-                        <div class="modal-background"></div>
-                        <div class="modal-card">
-                            <header class="modal-card-head">
-                                <p class="modal-card-title has-text-info-dark">Paragraph Details</p>
-                                <button class="delete" aria-label="close"></button>
-                            </header>
-                            <section class="modal-card-body has-text-left">
-                                <p class="subtitle has-text-info"><a href={{$task->document_link}}>Document Link</a></p>
-                                    <strong>Document Number: </strong><span>{{$task->doc_id}}</span><br>
-                                    <strong>Paragraph Number: </strong><span>{{$task->paragraph_num}}</span><br>
-                                    <strong>Case Number: </strong><span>{{$task->case_number}}</span><br>
-                                    <strong>Title: </strong><span>{{$task->title}}</span><br>
-                                    <strong>Page Number: </strong><span>{{$task->page}}</span><br>
-                                    <strong>Date of the Judgement: </strong><span>{{$task->date}}</span><br>
-                                    <strong>Allocation time: </strong><span>{{$task->allocation_time}}</span><br>
-                                    @if(strcmp($task->status,"labeled")==0)
-                                        <strong>Labeled time: </strong><span>{{$task->labeled_time}}</span><br>
-                                    @endif
-                            </section>
-                        </div>
-                    </div>
-                @endforeach
+                    @endforeach
 
-                <!-- Pagination Nav -->
-                <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-                    <a class="pagination-previous has-background-white" href={{$tasks->previousPageUrl()}}>
-                        <span class="icon is-small">
-                            <i class="fa fas fa-chevron-left"></i>
-                        </span>
-                    </a>
-                    <a class="pagination-next has-background-white" href={{$tasks->nextPageUrl()}}>
-                        <span class="icon is-small">
-                            <i class="fa fas fa-chevron-right"></i>
-                        </span>
-                    </a>
-                    <ul class="pagination-list">
-                        <li><a class="pagination-link has-background-white" aria-label="Goto page 1" href={{$tasks->url(1)}}>1</a></li>
-                        <li><span class="pagination-ellipsis">&hellip;</span></li>
-                        {{-- <li><a class="pagination-link has-background-white" aria-label="Goto page 45" href={{$tasks->previousPageUrl()}}>45</a>
-                        </li> --}}
-                        <li><a class="pagination-link is-current" aria-label={{"Page ".$tasks->currentPage()}}
-                                aria-current="page" href={{$tasks->url($tasks->currentPage())}}>{{$tasks->currentPage()}}</a></li>
-                        {{-- <li><a class="pagination-link has-background-white" aria-label="Goto page 47" href={{$tasks->nextPageUrl()}}>47</a>
-                        </li> --}}
-                        <li><span class="pagination-ellipsis">&hellip;</span></li>
-                        <li><a class="pagination-link has-background-white" aria-label={{"Goto page ".$tasks->lastPage()}} href={{$tasks->url($tasks->lastPage())}}>{{$tasks->lastPage()}}</a>
-                        </li>
-                    </ul>
-                </nav>
+                    <!-- Pagination Nav -->
+                    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                        <a class="pagination-previous has-background-white" href={{$tasks->previousPageUrl()}}>
+                            <span class="icon is-small">
+                                <i class="fa fas fa-chevron-left"></i>
+                            </span>
+                        </a>
+                        <a class="pagination-next has-background-white" href={{$tasks->nextPageUrl()}}>
+                            <span class="icon is-small">
+                                <i class="fa fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                        <ul class="pagination-list">
+                            <li><a class="pagination-link has-background-white" aria-label="Goto page 1" href={{$tasks->url(1)}}>1</a></li>
+                            <li><span class="pagination-ellipsis">&hellip;</span></li>
+                            {{-- <li><a class="pagination-link has-background-white" aria-label="Goto page 45" href={{$tasks->previousPageUrl()}}>45</a>
+                            </li> --}}
+                            <li><a class="pagination-link is-current" aria-label={{"Page ".$tasks->currentPage()}}
+                                    aria-current="page" href={{$tasks->url($tasks->currentPage())}}>{{$tasks->currentPage()}}</a></li>
+                            {{-- <li><a class="pagination-link has-background-white" aria-label="Goto page 47" href={{$tasks->nextPageUrl()}}>47</a>
+                            </li> --}}
+                            <li><span class="pagination-ellipsis">&hellip;</span></li>
+                            <li><a class="pagination-link has-background-white" aria-label={{"Goto page ".$tasks->lastPage()}} href={{$tasks->url($tasks->lastPage())}}>{{$tasks->lastPage()}}</a>
+                            </li>
+                        </ul>
+                    </nav>
+                @else
+                    <div class="columns is-vcentered is-centered">
+                        <p class="has-text-danger">Nothing to display.</p>
+                    </div>
+                @endif
             </article>
         </article>
     </article>

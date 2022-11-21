@@ -19,13 +19,14 @@
 			</div>
 			<div id="navbarMenuHeroC" class="navbar-menu">
 				<div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-					<a class="navbar-item has-text-weight-bold" href="/">Home</a>
-					<a class="navbar-item" href="/aboutus">About Us</a>
-
+					{{-- <a class="navbar-item has-text-weight-bold" href="/">Home</a> --}}
+					
 					@auth
+						<p class="navbar-item has-text-weight-bold" >Welcome {{auth()->user()->name}}</p>
 						<a class="navbar-item" href="/paragraph">Annotations</a>		
 						<a class="navbar-item" href="/dashboard/profile">Dashboard</a>	
 					@endauth
+					<a class="navbar-item" href="/aboutus">About Us</a>
 				</div>
 				<div class="navbar-end">
 					<div class="navbar-item">

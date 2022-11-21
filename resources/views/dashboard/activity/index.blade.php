@@ -35,7 +35,7 @@
                         <div class="card">
                             <div class="card-content has-text-centered">
                                 <h1 class="has-text-weight-semibold is-size-5">{{$key}}</h1>
-                                <h1 class="is-size-6">{{$value}}</h1>
+                                <h1 class="is-size-6">{{$value?: 0}}</h1>
                             </div>
                         </div>
                     </div>

@@ -36,8 +36,8 @@ class DashboardActivityController extends Controller
         return view('dashboard.activity.index',[
             'counts_data'=>$counts_data,
             'times_data'=>(array)$times_data[0],
-            'chart_1'=> ['labels' => array_column($chart_1,'date') ,'data' =>array_column($chart_1,'count') ],
-            'chart_2'=> ['labels' => array_column($chart_2,'date') ,'data' =>array_column($chart_2,'average') ]
+            'chart_1'=> ['labels' => array_reverse(array_column($chart_1,'date')) ,'data' =>array_reverse(array_column($chart_1,'count')) ],
+            'chart_2'=> ['labels' => array_reverse(array_column($chart_2,'date')) ,'data' =>array_reverse(array_column($chart_2,'average')) ]
         ]);
     }
 }

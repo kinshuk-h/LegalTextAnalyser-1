@@ -23,9 +23,12 @@ class DashboardTasksManageController extends Controller
             //find the paragraphs which expert has labeled or bypassed or times_up or modified
             $result=Classifications::getClassifiedParagraphsFullDetails()
                 ->where('classifications.e_id','=', $id)
-                ->where('title', 'like' ,'%'.$formFields['searchBy'].'%')
-                ->orWhere('case_number', 'like' ,'%'.$formFields['searchBy'].'%')
-                ->orWhere('content', 'like' ,'%'.$formFields['searchBy'].'%')
+                ->where(function($query) use ($formFields)
+                {
+                    $query->where('title', 'like' ,'%'.$formFields['searchBy'].'%')
+                    ->orWhere('case_number', 'like' ,'%'.$formFields['searchBy'].'%')
+                    ->orWhere('content', 'like' ,'%'.$formFields['searchBy'].'%');
+                })
                 ->groupBy(['classifications.doc_id','classifications.paragraph_num'
                 ,'allocation_time','labeled_time','status','content','page','case_number',
                 'title','date', 'document_link'])
@@ -140,9 +143,10 @@ class DashboardTasksManageController extends Controller
         ]);
 
         $alloted=Classifications::where([ 
-            'e_id'=> $id,'doc_id'=>$inputs['doc_id'],
-            'paragraph_num'=>$inputs['paragraph_num'], 
-            'status'=> 'labeled' ])->orWhere(['status'=> 'modified'])->first();
+            'e_id'=> $id,
+            'doc_id'=>$inputs['doc_id'],
+            'paragraph_num'=>$inputs['paragraph_num']
+            ])->whereIn('status' , ['labeled' ,'modified'])->first();
 
         //redirect to paragraph
         if($alloted==null){
