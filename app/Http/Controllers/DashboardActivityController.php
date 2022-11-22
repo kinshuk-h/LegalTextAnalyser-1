@@ -21,7 +21,7 @@ class DashboardActivityController extends Controller
         SEC_TO_TIME(AVG(TIME_TO_SEC(TIMEDIFF(labeled_time,allocation_time)))) as \'Average Labelling Time\',
         SEC_TO_TIME(MIN(TIME_TO_SEC(TIMEDIFF(labeled_time,allocation_time)))) as \'Minimum Labelling Time\',
         SEC_TO_TIME(MAX(TIME_TO_SEC(TIMEDIFF(labeled_time,allocation_time)))) as \'Maximum Labelling Time\'')
-        ->where('e_id','=', $id)->where('status','=', 'labeled')->get()->toArray();
+        ->where('e_id','=', $id)->whereIn('status',['labeled','modified'])->get()->toArray();
 
         $chart_1=DB::table('classifications')
         ->selectRaw('date(labeled_time) as date,count(*) as count')
