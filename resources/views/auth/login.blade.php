@@ -5,11 +5,19 @@
         <link href="{{ mix('resources/css/style.css') }}" rel="stylesheet">
     @endpush
 
-    <script>
+    {{-- <script>
         if('{{Session::has('status')}}'){
             alert('{{Session::get('status')}}');
         }
-    </script>
+    </script> --}}
+    @if(Session::has('status'))
+        <div class="notification is-primary">
+            <button class="delete" onclick="this.parentElement.style.display='none'" ></button>
+            <div class="buttons is-centered">
+                {{Session::get('status')}}
+            </div>
+        </div>
+    @endif
 
     <section class="hero is-fullheight-with-navbar">
         <div class="hero-body has-background">

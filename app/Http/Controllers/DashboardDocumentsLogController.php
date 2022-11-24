@@ -11,7 +11,7 @@ class DashboardDocumentsLogController extends Controller
     public function show(Request $request){
         $docs_count_data=DB::select("select PNo.doc_id,title,PNo.count as PNo,LNo,BNo,TNo from
         (Select p.doc_id,title,count(paragraph_num) as count from paragraphs p join documents d 
-        on p.doc_id=d.doc_id group by p.doc_id) as PNo 
+        on p.doc_id=d.doc_id group by p.doc_id,title) as PNo 
         join 
         (Select D.doc_id,count(cnt) as LNo from
         documents as D left join (

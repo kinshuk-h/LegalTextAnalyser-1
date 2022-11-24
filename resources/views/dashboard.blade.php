@@ -5,17 +5,14 @@
         <link href="{{ mix('resources/css/dashboard.css') }}" rel="stylesheet">
     @endpush
 
-    {{-- <div class="maincont">
-        <div class="leftsec">
-            <div class="hi_name"> Hi, <span class="user_name">{{auth()->user()->name}}</span></div>
-            <div class="subsec"> <a href='/dashboard/profile'>Account</a> </div>
-            <div class="subsec"> <a href='/dashboard/tasks'>Tasks</a> </div>
-            <div class="subsec"> <a href='/dashboard/stats'>Statistics</a> </div>
+    @if(Session::has('message'))
+        <div class="notification is-primary">
+            <button class="delete" onclick="this.parentElement.style.display='none'" ></button>
+            <div class="buttons is-centered">
+                {{Session::get('message')}}
+            </div>
         </div>
-    
-        @yield('dash-ui')
-        
-    </div> --}}
+    @endif
 
     <section class="side-bar-container block">
         <section class="side-bar has-background-white mt-1 mb-0 ml-1 mr-1">

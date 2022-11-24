@@ -56,18 +56,18 @@
                 <div class="tile is-ancestor ">
                     <div class="tile is-vertical is-8">
                         <div class="tile is-parent">
-                            <article id="paragraph-content" class="tile is-child notification has-background-success-light">
-                                <p class="title">Your Paragraph Here</p>
-                                <div class="content">
-                                    <p class="subtitle has-text-info">Details of the <a href={{ $message['document']->document_link }}>Document</a></p>
-                                    <strong>Document Number: </strong><span>{{ $message['document']->doc_id }}</span><br>
-                                    <strong>Case Number: </strong><span>{{ $message['document']->case_number }}</span><br>
-                                    <strong>Title: </strong><span>{{ $message['document']->title }}</span><br>
-                                    <strong>Date of the Judgement: </strong><span>{{ $message['document']->date }}</span><br>
-                                    <strong>Page Number: </strong><span>{{ $message['paragraph']->page }}</span><br>
-                                    <strong>Paragraph Number: </strong><span>{{ $message['paragraph']->paragraph_num }}</span><br>
+                            <article class="paragraph-content tile is-child notification has-background-success-light">
+                                <p class="paragraph-content title">Your Paragraph Here</p>
+                                <div class="paragraph-content content">
+                                    <p class="paragraph-content subtitle has-text-info">Details of the <a class="paragraph-content subtitle has-text-info" href={{ $message['document']->document_link }} target="_blank" rel="noopener noreferrer">Document</a></p>
+                                    <strong class="paragraph-content">Document Number: </strong><span class="paragraph-content">{{ $message['document']->doc_id }}</span><br>
+                                    <strong class="paragraph-content">Case Number: </strong><span class="paragraph-content">{{ $message['document']->case_number }}</span><br>
+                                    <strong class="paragraph-content">Title: </strong><span class="paragraph-content">{{ $message['document']->title }}</span><br>
+                                    <strong class="paragraph-content">Date of the Judgement: </strong><span class="paragraph-content">{{ $message['document']->date }}</span><br>
+                                    <strong class="paragraph-content">Page Number: </strong><span class="paragraph-content">{{ $message['paragraph']->page }}</span><br>
+                                    <strong class="paragraph-content">Paragraph Number: </strong><span class="paragraph-content">{{ $message['paragraph']->paragraph_num }}</span><br>
                                 </div>
-                                <div class="content scrollable">
+                                <div class="paragraph-content content scrollable">
                                     {{ $message['paragraph']->content }}
                                 </div>
                             </article>
@@ -103,8 +103,7 @@
                                     </div>
                                     
                                     <div class="buttons is-centered">
-                                        <button type="submit" class="button is-primary js-modal-trigger" id="change_passwd"
-                                            data-target="paragraph1-modal">SUBMIT</button>
+                                        <button type="submit" class="button is-primary" id="change_passwd">SUBMIT</button>
                                     </div>
                                 </form>
                                 <form action="/paragraph/bypass" method="POST">
@@ -112,61 +111,12 @@
 
                                     <input type="radio" name="bypass" value="true" hidden checked>
                                     
-                                    <button type="submit" class="button is-light js-modal-trigger" id="change_passwd"
-                                        data-target="paragraph2-modal">SKIP</button>
+                                    <button type="submit" class="button is-light" id="change_passwd">SKIP</button>
                                 </form>
                             </div>
                         </article>
                     </div>
                 </div>
-
-                {{-- <div class="modal" id="paragraph1-modal">
-                    <div class="modal-background"></div>
-                    <div class="modal-card">
-                        <header class="modal-card-head has-text-centered">
-                            <p class="modal-card-title has-text-success-dark has-text-weight-bold">Paragraph has
-                                been labelled.</p>
-                        </header>
-
-                        <section class="modal-card-body has-text-centered">
-                            <div class="container is-fluid">
-                                <b>Do you want to label next?</b>
-                                <div class="field is-grouped is-grouped-centered mt-5">
-                                    <div class="control">
-                                        <a class="button is-primary" href="paragraphs.html">YES</a>
-                                    </div>
-
-                                    <div class="control">
-                                        <a class="button is-light" href="annotations.html">NO</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-
-                <div class="modal" id="paragraph2-modal">
-                    <div class="modal-background"></div>
-                    <div class="modal-card">
-                        <header class="modal-card-head has-text-centered">
-                            <p class="modal-card-title has-text-info-dark has-text-weight-bold">Paragraph has been
-                                bypassed.</p>
-                        </header>
-
-                        <section class="modal-card-body has-text-centered">
-                            <div class="container is-fluid">
-                                <b>Do you want to label next?</b>
-                                <div class="field is-grouped is-grouped-centered mt-5">
-                                    <div class="control">
-                                        <a class="button is-primary" href="paragraphs.html">YES</a>
-                                    </div>
-                                    <div class="control">
-                                        <a class="button is-light" href="annotations.html">NO</a>
-                                    </div>
-                                </div>
-                        </section>
-                    </div>
-                </div> --}}
             </div>
         </div>
     </section>
@@ -191,9 +141,10 @@
         }
         , 1000);
 
-        let slider = document.getElementById("font-size-slider");
-        slider.addEventListener('input', function(event) {
-            document.getElementById("paragraph-content").style.fontSize = event.target.value+"px";
+        document.getElementById("font-size-slider").addEventListener('input', function(event) {
+            document.querySelectorAll(".paragraph-content").forEach(el => {
+                el.style.fontSize = event.target.value+"px";
+            });
         });
 
     </script>

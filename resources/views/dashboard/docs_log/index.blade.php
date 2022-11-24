@@ -42,8 +42,8 @@
                 <span class="icon"><i class="mdi mdi-reload"></i></span>
                 </a>
             </header>
-            <div class="card-content">
-                <div class="table-wrapper has-mobile-cards">
+            <div class="card-content p-0">
+                <div class="table-wrapper has-mobile-cards p-6">
                 <table class="table is-fullwidth is-striped is-hoverable has-text-left">
                     <thead>
                     <tr>

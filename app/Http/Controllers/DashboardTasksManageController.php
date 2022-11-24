@@ -33,7 +33,11 @@ class DashboardTasksManageController extends Controller
                 ,'allocation_time','labeled_time','status','content','page','case_number',
                 'title','date', 'document_link'])
                 ->having('status', '!=', 'alloted')
-                ->paginate(2);
+                ->paginate(2)->appends(request()->query());
+            
+            if($result->isEmpty()){
+                return back()->with('message','No data to display,here!!');
+            }
 
             return view("dashboard.tasks.index",[
                 'tasks'=> $result,
@@ -64,7 +68,11 @@ class DashboardTasksManageController extends Controller
                     ->groupBy(['classifications.doc_id','classifications.paragraph_num'
                     ,'allocation_time','labeled_time','status','content','page','case_number',
                     'title','date', 'document_link'])
-                    ->paginate(2);
+                    ->paginate(2)->appends(request()->query());
+                    
+                if($result->isEmpty()){
+                    return back()->with('message','No data to display,here!!');
+                }
     
                 return view("dashboard.tasks.index",[
                     'tasks'=> $result,
@@ -88,8 +96,11 @@ class DashboardTasksManageController extends Controller
                     ->orHaving('label_num', 'like' , $formFields['filterBy'].',%')
                     ->orHaving('label_num', 'like' ,'%,'.$formFields['filterBy'].',%')
                     ->orHaving('label_num', 'like' ,'%,'.$formFields['filterBy'] )
-                    ->paginate(2);
-    
+                    ->paginate(2)->appends(request()->query());
+                
+                if($result->isEmpty()){
+                    return back()->with('message','No data to display,here!!');
+                }
                 return view("dashboard.tasks.index",[
                     'tasks'=> $result,
                     'labels'=>$labels,
@@ -119,6 +130,10 @@ class DashboardTasksManageController extends Controller
                 ,'allocation_time','labeled_time','status','content','page','case_number',
                 'title','date', 'document_link'])
                 ->paginate(2);
+
+            if($result->isEmpty()){
+                return back()->with('message','No data to display,here!!');
+            }
 
             return view("dashboard.tasks.index",[
                 'tasks'=> $result,
@@ -183,7 +198,7 @@ class DashboardTasksManageController extends Controller
             ClassifiedLabels::insert($entries);
 
             DB::commit();
-            return redirect("/dashboard/tasks")->with('message','Paragraph Labels are modified.');
+            return back()->with('message','Paragraph Labels are modified.');
         } catch(\Exception $e)
         {
             DB::rollback();

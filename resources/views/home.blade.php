@@ -4,6 +4,14 @@
     @push('styles')
         <link href="{{ mix('resources/css/style.css') }}" rel="stylesheet">
     @endpush
+    @if(Session::has('message'))
+        <div class="notification is-primary">
+            <button class="delete" onclick="this.parentElement.style.display='none'" ></button>
+            <div class="buttons is-centered">
+                {{Session::get('message')}}
+            </div>
+        </div>
+    @endif
 
   <section class="hero is-fullheight-with-navbar">
     <div class="hero-body has-background">

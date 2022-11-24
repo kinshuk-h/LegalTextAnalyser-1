@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Roles;
 use App\Models\Experts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -30,11 +31,14 @@ class RegisterController extends Controller
         //db insert into command
         $expert=Experts::create($formFields);
 
+        //assign anotator role
+        $expert->assignRole(Roles::ANNOTATOR);
+
         //login
         auth()->login($expert);
 
         event(new Registered($expert));
 
-        return redirect("/email/verify")->with('message','User created and logged In.');
+        return redirect("/email/verify")->with('message','You are registered and logged In.');
     }
 }

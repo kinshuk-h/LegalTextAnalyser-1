@@ -5,12 +5,6 @@
         <link href="{{ mix('resources/css/paragraphs.css') }}" rel="stylesheet">
     @endpush
 
-    <script>
-        if('{{Session::has('message')}}'){
-            alert('{{Session::get('message')}}');
-        }
-    </script>
-
     <article class="content-area ">
         <article class="container">
             <section class="block">
@@ -70,9 +64,9 @@
                                 <span class="more">
                                     {{substr($task->content,81)}}
                                 </span>
-                                <button class="read is-text has-text-link p-0">
+                                <a class="read is-text has-text-link p-0">
                                     <span>Read More</span>
-                                </button>
+                                </a>
                             </section>
                             <div class="columns is-vcentered">
                                 <div class="column is-narrow">
@@ -123,22 +117,22 @@
                                     </header>
                                     <section class="modal-card-body has-text-left">
                                         <p class="subtitle has-text-info">You can select multiple labels</p>
-                                        <form action="/dashboard/tasks/modify-labels" method="POST" id="labelcontainer" class="content is-fullheight">
+                                        <form action="/dashboard/tasks/modify-labels" method="POST" id={{"labelcontainer-".$task->doc_id."-".$task->paragraph_num}} class="content is-fullheight">
                                             @csrf
                                             @method('PUT')
 
                                             
-                                        <input type="number" name="doc_id" value={{$task->doc_id}} hidden>
-                                        
-                                        <input type="number" name="paragraph_num" value={{$task->paragraph_num}} hidden>
+                                            <input type="number" name="doc_id" value={{$task->doc_id}} hidden>
+                                            
+                                            <input type="number" name="paragraph_num" value={{$task->paragraph_num}} hidden>
 
                                             <div class="content rows">
                                                 <div class="checkitems">
                                                     @foreach ($labels as $label)
                                                         <div class="checkitem">
-                                                            <input type="checkbox" id={{"label-".$label['label_num']}} class="is-checkradio is-link"  value={{$label['label_num']}}
+                                                            <input type="checkbox" id={{"labelcontainer-".$task->doc_id."-".$task->paragraph_num."-label-".$label['label_num']}} class="is-checkradio is-link"  value={{$label['label_num']}}
                                                                 name="labels[]" {{ in_array($label['label_num'] , explode(",",$task->label_num)) ? "checked" : "" }}/>
-                                                            <label for={{"label-".$label['label_num']}}><span
+                                                            <label for={{"labelcontainer-".$task->doc_id."-".$task->paragraph_num."-label-".$label['label_num']}}><span
                                                                     class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-info"
                                                                     data-tooltip="Tooltip content&#10;tooltip content">{{$label['label_name']}}</span></label>
                                                         </div>
@@ -150,8 +144,7 @@
                                             @enderror
 
                                             <div class="buttons is-centered">
-                                                <button class="button is-primary js-modal-trigger" id="para_annotate"
-                                                    data-target="paragraph1-modal" type="submit">SUBMIT</button>
+                                                <button class="button is-primary" id={{"labelcontainer-".$task->doc_id."-".$task->paragraph_num."-para_annotate"}} type="submit">SUBMIT</button>
                                             </div>
                                         </form>
                                     </section>
@@ -167,7 +160,7 @@
                                     <button class="delete" aria-label="close"></button>
                                 </header>
                                 <section class="modal-card-body has-text-left">
-                                    <p class="subtitle has-text-info"><a href={{$task->document_link}}>Document Link</a></p>
+                                    <p class="subtitle has-text-info"><a href={{$task->document_link}} target="_blank" rel="noopener noreferrer">Document Link</a></p>
                                         <strong>Document Number: </strong><span>{{$task->doc_id}}</span><br>
                                         <strong>Paragraph Number: </strong><span>{{$task->paragraph_num}}</span><br>
                                         <strong>Case Number: </strong><span>{{$task->case_number}}</span><br>

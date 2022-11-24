@@ -5,14 +5,22 @@
     <link href="{{ mix('resources/css/style.css') }}" rel="stylesheet">
     @endpush
 
-    <script>
+    {{-- <script>
         if('{{Session::has('status')}}'){
             alert('{{Session::get('status')}}');
         }
         else if('{{Session::has('email')}}'){
             alert('{{Session::get('email')}}');
         }
-    </script>
+    </script> --}}
+    @if(Session::has('status') || Session::has('email'))
+        <div class="notification is-primary">
+            <button class="delete" onclick="this.parentElement.style.display='none'" ></button>
+            <div class="buttons is-centered">
+                {{Session::get('status') ?: Session::get('email')}}
+            </div>
+        </div>
+    @endif
 
     <section class="hero is-fullheight-with-navbar">
         <div class="hero-body has-background">

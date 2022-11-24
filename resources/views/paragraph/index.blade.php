@@ -4,13 +4,15 @@
     @push('styles')
         <link href="{{ mix('resources/css/annotations.css') }}" rel="stylesheet">
     @endpush
-    <script>
-        var msg = '{{Session::get('message')}}';
-        var exist = '{{Session::has('message')}}';
-        if(exist){
-            alert(msg);
-        }
-    </script>
+    @if(Session::has('message'))
+        <div class="notification is-primary">
+            <button class="delete" onclick="this.parentElement.style.display='none'" ></button>
+            <div class="buttons is-centered">
+                {{Session::get('message')}}
+            </div>
+        </div>
+    @endif
+
     <section class="hero is-fullheight-with-navbar">
         <div class="hero-body has-background">
             <div class="columns">
