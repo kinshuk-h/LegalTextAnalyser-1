@@ -35,12 +35,28 @@
                     </span>
                     Change Password
                 </a>
-                <a class="panel-block" href="/dashboard/tasks">
-                    <span class="panel-icon">
-                        <i class="fa fas fa-book" aria-hidden="true"></i>
-                    </span>
-                    Tasks
-                </a>
+                @role('Annotator')
+                    <a class="panel-block" href="/dashboard/tasks">
+                        <span class="panel-icon">
+                            <i class="fa fas fa-book" aria-hidden="true"></i>
+                        </span>
+                        Tasks
+                    </a>
+                @endrole
+                @hasanyrole('SuperAdmin|Admin')
+                    <a class="panel-block" href="/dashboard/users-log">
+                        <span class="panel-icon">
+                            <i class="fa fas fa-users" aria-hidden="true"></i>
+                        </span>
+                        Users Log
+                    </a>
+                    <a class="panel-block" href="/dashboard/docs-log">
+                        <span class="panel-icon">
+                            <i class="fa fas fa-file" aria-hidden="true"></i>
+                        </span>
+                        Documents Log
+                    </a>
+                @endhasanyrole
                 <a class="panel-block" href="/dashboard/stats">
                     <span class="panel-icon">
                         <i class="material-icons" aria-hidden="true">sort</i>

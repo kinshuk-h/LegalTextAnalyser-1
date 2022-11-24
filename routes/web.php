@@ -8,8 +8,10 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\EditUserDetailsController;
 use App\Http\Controllers\DashboardActivityController;
+use App\Http\Controllers\DashboardUsersLogController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\DashboardTasksManageController;
+use App\Http\Controllers\DashboardDocumentsLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +54,7 @@ Route::group(['prefix' => 'email'], function() {
 });
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::group(['prefix' => 'paragraph'], function() {
+    Route::group(['prefix' => 'paragraph','middleware'=>'role:Annotator'], function() {
         //labeling paragraph
         Route::get('/', [AnnotationController::class, 'annotationIndex']);
         Route::get('/allocate', [AnnotationController::class, 'allocateParagraph']);
@@ -73,11 +75,21 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::put('/', [EditUserDetailsController::class, 'updatePassword']);
         });
 
-        Route::group(['prefix' => 'tasks'], function() {
+        Route::group(['prefix' => 'tasks','middleware'=>'role:Annotator'], function() {
             Route::get('/', [DashboardTasksManageController::class, 'showAllTasks']);
             Route::get('/filter', [DashboardTasksManageController::class, 'showFilteredTasks']);
             Route::get('/search', [DashboardTasksManageController::class, 'showTasksBySearch']);
             Route::put('/modify-labels', [DashboardTasksManageController::class, 'modifyLabels']);
+        });
+
+        Route::group(['prefix' => 'users-log','middleware'=>'role:SuperAdmin|Admin'], function() {
+            Route::get('/', [DashboardUsersLogController::class, 'show']);
+            // Route::get('/filter', [DashboardTasksManageController::class, 'showFilteredTasks']);
+        });
+
+        Route::group(['prefix' => 'docs-log','middleware'=>'role:SuperAdmin|Admin'], function() {
+            Route::get('/', [DashboardDocumentsLogController::class, 'show']);
+            // Route::get('/filter', [DashboardTasksManageController::class, 'showFilteredTasks']);
         });
 
         Route::get('/stats', [DashboardActivityController::class, 'showActivity']);

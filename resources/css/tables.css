@@ -4,11 +4,11 @@
   .table-wrapper:not(:last-child) {
     margin-bottom: 1.5rem;
   }
-  @media screen and (max-width: 1023px) {
+  /* @media screen and (max-width: 1200px) { */
     .table-wrapper {
       overflow-x: auto;
     }
-  }
+  /* } */
   
   .b-table {
     transition: opacity 86ms ease-out;

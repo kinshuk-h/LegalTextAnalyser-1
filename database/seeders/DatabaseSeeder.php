@@ -6,6 +6,9 @@ namespace Database\Seeders;
 
 use App\Models\Labels;
 use Illuminate\Database\Seeder;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\LabelSeeder;
+use Database\Seeders\ExpertSeeder;
 use Database\Seeders\ParagraphSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,20 +20,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Experts::factory(5)->create();
-
-        for($i=1;$i<=10;$i++){
-            Labels::updateOrCreate(
-                ['label_num' => $i],
-                [
-                    'label_num' => $i,
-                    'label_name' => 'Label '.$i,
-                    'details' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt corporis, vel quod magni, odit, rem a quo minima quae numquam necessitatibus fuga soluta! Iure modi vitae facilis natus voluptates neque.'
-                ]
-            );
-        }
-
         $this->call([
+            RoleSeeder::class,
+            ExpertSeeder::class,
+            LabelSeeder::class, 
             ParagraphSeeder::class
         ]);
     }

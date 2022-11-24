@@ -1,5 +1,6 @@
 @import 'bulma/css/bulma.min.css';
 @import 'bulma-extensions/dist/css/bulma-extensions.min.css';
+@import '@creativebulma/bulma-tooltip/dist/bulma-tooltip.min.css';
 
 .footer{
     /* position: fixed;

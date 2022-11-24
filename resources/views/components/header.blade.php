@@ -23,7 +23,9 @@
 					
 					@auth
 						<p class="navbar-item has-text-weight-bold" >Welcome {{auth()->user()->name}}</p>
-						<a class="navbar-item" href="/paragraph">Annotations</a>		
+						@role('Annotator')
+							<a class="navbar-item" href="/paragraph">Annotations</a>	
+						@endrole	
 						<a class="navbar-item" href="/dashboard/profile">Dashboard</a>	
 					@endauth
 					<a class="navbar-item" href="/aboutus">About Us</a>
