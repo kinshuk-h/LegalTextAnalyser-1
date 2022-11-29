@@ -4,6 +4,17 @@
     @push('styles')
         <link href="{{ mix('resources/css/paragraphs.css') }}" rel="stylesheet">
     @endpush
+    
+    @push('notify-errors')
+        @error('labels')
+            <div class="notification is-primary">
+                <button class="delete" onclick="this.parentElement.style.display='none'" ></button>
+                <div class="buttons is-centered">
+                    {{ $message }}
+                </div>
+            </div>
+        @enderror
+    @endpush
 
     <article class="content-area ">
         <article class="container">
@@ -139,9 +150,6 @@
                                                     @endforeach
                                                 </div>
                                             </div>
-                                            @error('labels')
-                                                <script>alert('{{ $message }}')</script>
-                                            @enderror
 
                                             <div class="buttons is-centered">
                                                 <button class="button is-primary" id={{"labelcontainer-".$task->doc_id."-".$task->paragraph_num."-para_annotate"}} type="submit">SUBMIT</button>
@@ -168,7 +176,7 @@
                                         <strong>Page Number: </strong><span>{{$task->page}}</span><br>
                                         <strong>Date of the Judgement: </strong><span>{{$task->date}}</span><br>
                                         <strong>Allocation time: </strong><span>{{$task->allocation_time}}</span><br>
-                                        @if(strcmp($task->status,"labeled")==0)
+                                        @if(in_array($task->status,["labeled","modified"]))
                                             <strong>Labeled time: </strong><span>{{$task->labeled_time}}</span><br>
                                         @endif
                                 </section>

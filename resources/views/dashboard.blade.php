@@ -14,6 +14,8 @@
         </div>
     @endif
 
+    @stack('notify-errors')
+
     <section class="side-bar-container block">
         <section class="side-bar has-background-white mt-1 mb-0 ml-1 mr-1">
             <nav class="is-info">

@@ -15,7 +15,7 @@
                 </p>
                 </div>
 
-                <div class="level-right mr-1">
+                {{-- <div class="level-right mr-1">
                 <div class="field has-addons">
                     <div class="control is-fluid">
                     <input class="input" type="text" placeholder="Search by...">
@@ -26,7 +26,7 @@
                     </a>
                     </div>
                 </div>
-                </div>
+                </div> --}}
             </nav>
             </section>
         </section>

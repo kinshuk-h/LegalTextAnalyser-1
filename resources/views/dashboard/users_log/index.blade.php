@@ -16,7 +16,7 @@
                 </p>
                 </div>
 
-                <div class="level-right">
+                {{-- <div class="level-right">
                 <div class="control has-icons-left mr-1">
                     <div class="select">
                     <select>
@@ -33,7 +33,7 @@
                     <i class="fa fas fa-filter"></i>
                     </div>
                 </div>
-                </div>
+                </div> --}}
             </nav>
             </section>
         </section>
@@ -94,13 +94,26 @@
                                 <td data-label="Maximum Labelling Time">{{$data->Maximum_Labelling_Time}}</td>
                                 <td class="is-actions-cell">
                                     <div class="buttons is-right">
-                                    <button class="button is-small is-primary" type="button">
-                                        <span class="icon"><i class="mdi mdi-eye"></i></span>
-                                    </button>
-                                    <button class="button is-small is-danger jb-modal" data-target="sample-modal"
-                                        type="button">
-                                        <span class="icon"><i class="mdi mdi-trash-can"></i></span>
-                                    </button>
+                                        <button class="button is-small is-primary" type="button">
+                                            <span class="icon"><i class="mdi mdi-eye"></i></span>
+                                        </button>
+                                        <form action="/dashboard/users-log/toggle-dormant" method="POST">
+                                            @csrf
+                                            @method('PUT')
+
+                                            <input type="number" name="id" value={{$data->id}} hidden>
+
+                                            @if($data->is_dormant)
+                                                <button class="button is-small is-danger" type="submit">
+                                                    <span>dormant</span>
+                                                </button>
+                                            @else
+                                                <button class="button is-small is-success" type="submit">
+                                                    <span>non-dormant</span>
+                                                </button>
+                                            @endif
+
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

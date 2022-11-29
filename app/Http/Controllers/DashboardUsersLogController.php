@@ -11,7 +11,7 @@ class DashboardUsersLogController extends Controller
 {
     public function show(Request $request){
         
-        $counts_data=DB::select('Select id,name,status,count,Total_Labelling_Time,Average_Labelling_Time,Minimum_Labelling_Time,Maximum_Labelling_Time
+        $counts_data=DB::select('Select id,is_dormant,name,status,count,Total_Labelling_Time,Average_Labelling_Time,Minimum_Labelling_Time,Maximum_Labelling_Time
         from (
             select e_id,GROUP_CONCAT(status) as status,GROUP_CONCAT(count) as count
             from (SELECT e_id,status,count(*) as count 
@@ -22,11 +22,16 @@ class DashboardUsersLogController extends Controller
                 SEC_TO_TIME(MIN(TIME_TO_SEC(TIMEDIFF(labeled_time,allocation_time)))) as \'Minimum_Labelling_Time\',
                 SEC_TO_TIME(MAX(TIME_TO_SEC(TIMEDIFF(labeled_time,allocation_time)))) as \'Maximum_Labelling_Time\'
                 FROM classifications where status in (\'labeled\',\'modified\') group by e_id
-            ) as TD on CD.e_id=TD.e_id join experts on CD.e_id=id;');
+            ) as TD on CD.e_id=TD.e_id right join experts on CD.e_id=id;');
 
         $counts_data = Paginators::arrayPaginator($counts_data, $request);
 
         foreach($counts_data as $data){
+            
+            foreach($data as $key => $value){
+                if(is_null($value)) $data->$key=0;
+            }
+
             $obj= [
                 'id' => $data->id,'alloted' => 0,'labeled' => 0,
                 'timesup' => 0,'bypass' => 0,'modified' => 0,'total alloted' => 0
@@ -46,5 +51,17 @@ class DashboardUsersLogController extends Controller
         return view('dashboard.users_log.index',[
             'counts_data'=>$counts_data
         ]);
+    }
+
+    public function toggleExpertDormant(Request $request){
+        $formFields=$request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        Experts::where(['id' => $formFields['id']])->update([
+            'is_dormant' => !Experts::where(['id' => $formFields['id']])->first()['is_dormant']
+        ]);
+
+        return back()->with('message','Operation Successful !');
     }
 }
