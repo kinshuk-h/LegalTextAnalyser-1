@@ -2,7 +2,7 @@
 
 @section('dash-ui')
     @push('styles')
-        <link href="{{ mix('resources/css/paragraphs.css') }}" rel="stylesheet">
+        <link href="{{ Vite::asset('resources/css/paragraphs.css') }}" rel="stylesheet">
     @endpush
     
     @push('notify-errors')
@@ -222,6 +222,6 @@
     <!--jQuery CDN-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <script src="{{ mix('resources/js/readmore.js') }}"></script>
-    <script src="{{ mix('resources/js/modal.js') }}"></script>
+    <script src="{{ Vite::asset('resources/js/readmore.js') }}"></script>
+    <script src="{{ Vite::asset('resources/js/modal.js') }}"></script>
 @endsection

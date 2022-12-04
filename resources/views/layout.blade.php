@@ -16,8 +16,8 @@
         <link rel="stylesheet" href="https://cdn.rawgit.com/michalsnik/aos/2.0.1/dist/aos.css" />
         <script src="https://cdn.rawgit.com/michalsnik/aos/2.0.1/dist/aos.js"></script>
         {{-- CSS Stylesheets --}}
-        <link href="{{ mix('resources/css/app.css') }}" rel="stylesheet">
-        <link href="{{ mix('resources/css/toppage.css') }}" rel="stylesheet">
+        <link href="{{ Vite::asset('resources/css/app.css') }}" rel="stylesheet">
+        <link href="{{ Vite::asset('resources/css/toppage.css') }}" rel="stylesheet">
         <style>
             *{
                 font-size: 0.9rem;
@@ -35,8 +35,8 @@
 
         <x-footer />
 
-        <script src="{{ mix('resources/js/navbar.js') }}"></script>
-        <script src="{{ mix('resources/js/toparrowpage.js') }}"></script>
+        <script src="{{ Vite::asset('resources/js/navbar.js') }}"></script>
+        <script src="{{ Vite::asset('resources/js/toparrowpage.js') }}"></script>
         
     </body>
 </html>

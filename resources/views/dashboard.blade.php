@@ -2,7 +2,7 @@
 
 @section('content')
     @push('styles')
-        <link href="{{ mix('resources/css/dashboard.css') }}" rel="stylesheet">
+        <link href="{{ Vite::asset('resources/css/dashboard.css') }}" rel="stylesheet">
     @endpush
 
     @if(Session::has('message'))

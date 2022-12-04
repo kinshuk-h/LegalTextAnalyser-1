@@ -2,7 +2,7 @@
 
 @section('dash-ui')
     @push('styles')
-        <link href="{{ mix('resources/css/tables.css') }}" rel="stylesheet">
+        <link href="{{ Vite::asset('resources/css/tables.css') }}" rel="stylesheet">
     @endpush
 
     <article class="content-area ">

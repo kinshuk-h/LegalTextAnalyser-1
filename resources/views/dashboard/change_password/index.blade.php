@@ -94,5 +94,5 @@
         </article>
     </article>
 
-    <script src="{{ mix('resources/js/login_signup.js') }}"></script>
+    <script src="{{ Vite::asset('resources/js/login_signup.js') }}"></script>
 @endsection

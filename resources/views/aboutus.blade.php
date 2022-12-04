@@ -2,7 +2,7 @@
 
 @section('content')
     @push('styles')
-        <link href="{{ mix('resources/css/aboutus.css') }}" rel="stylesheet">
+        <link href="{{ Vite::asset('resources/css/aboutus.css') }}" rel="stylesheet">
     @endpush
 
     <section class="hero is-fullheight-with-navbar">
@@ -64,7 +64,7 @@
     </section>
 
     <!-- Essential JavaScripts -->
-    <script src="{{ mix('resources/js/aos.js') }}"></script>
+    <script src="{{ Vite::asset('resources/js/aos.js') }}"></script>
     
 @endsection
 

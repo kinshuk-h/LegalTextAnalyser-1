@@ -2,7 +2,7 @@
 
 @section('content')
     @push('styles')
-        <link href="{{ mix('resources/css/style.css') }}" rel="stylesheet">
+        <link href="{{ Vite::asset('resources/css/style.css') }}" rel="stylesheet">
     @endpush
     @if(Session::has('message'))
         <div class="notification is-primary">

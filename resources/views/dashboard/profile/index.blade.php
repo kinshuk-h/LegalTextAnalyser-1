@@ -109,5 +109,5 @@
     </article>
 
     <!-- Essential JavaScripts -->
-    <script src="{{ mix('resources/js/profile.js') }}"></script>
+    <script src="{{ Vite::asset('resources/js/profile.js') }}"></script>
 @endsection

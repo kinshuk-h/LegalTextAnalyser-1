@@ -2,7 +2,7 @@
 
 @section('content')
     @push('styles')
-        <link href="{{ mix('resources/css/paragraphs.css') }}" rel="stylesheet">
+        <link href="{{ Vite::asset('resources/css/paragraphs.css') }}" rel="stylesheet">
     @endpush
 
     {{-- Actual content --}}
@@ -121,7 +121,7 @@
         </div>
     </section>
 
-    <script src="{{ mix('resources/js/modal.js') }}"></script>
+    <script src="{{ Vite::asset('resources/js/modal.js') }}"></script>
     <script type="text/javascript">
         let meta= {!! json_encode($message['allocation']) !!};
         let alloc_time= new Date(meta.allocation_time);
