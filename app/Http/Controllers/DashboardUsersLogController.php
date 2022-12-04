@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Roles;
 use App\Models\Experts;
 use App\Helper\Paginators;
 use Illuminate\Http\Request;
@@ -45,6 +46,8 @@ class DashboardUsersLogController extends Controller
             }
             $obj['total alloted']=$tot;
             $data->counts =$obj;
+
+            $data->role=Experts::where(['id' => $data->id])->first()->getRoleNames()->toArray();
         }
         // dd($counts_data);
 
@@ -58,9 +61,44 @@ class DashboardUsersLogController extends Controller
             'id' => 'required|integer',
         ]);
 
+        $expert=Experts::where(['id' => $formFields['id']])->first();
+        if($expert == null){
+            return back()->with('message','Wrong expert ID!');
+        }
+
+        if($expert->hasRole(Roles::SUPER_ADMIN)){
+            return back()->with('message','Invalid Operation!');
+        }
+
         Experts::where(['id' => $formFields['id']])->update([
-            'is_dormant' => !Experts::where(['id' => $formFields['id']])->first()['is_dormant']
+            'is_dormant' => !$expert['is_dormant']
         ]);
+
+        return back()->with('message','Operation Successful !');
+    }
+
+    public function toggleExpertRole(Request $request){
+        $formFields=$request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        $expert=Experts::where(['id' => $formFields['id']])->first();
+        if($expert == null){
+            return back()->with('message','Wrong expert ID!');
+        }
+
+        if($expert->hasRole(Roles::SUPER_ADMIN)){
+            return back()->with('message','Invalid Operation!');
+        }
+
+        if($expert->hasRole(Roles::ADMIN)){
+            $expert->removeRole(Roles::ADMIN);
+            $expert->assignRole(Roles::ANNOTATOR);
+        }
+        else if($expert->hasRole(Roles::ANNOTATOR)){
+            $expert->removeRole(Roles::ANNOTATOR);
+            $expert->assignRole(Roles::ADMIN);
+        }
 
         return back()->with('message','Operation Successful !');
     }

@@ -94,9 +94,23 @@
                                 <td data-label="Maximum Labelling Time">{{$data->Maximum_Labelling_Time}}</td>
                                 <td class="is-actions-cell">
                                     <div class="buttons is-right">
-                                        <button class="button is-small is-primary" type="button">
+                                        {{-- <button class="button is-small is-primary" type="button">
                                             <span class="icon"><i class="mdi mdi-eye"></i></span>
-                                        </button>
+                                        </button> --}}
+                                        @role('SuperAdmin')
+                                            <form action="/dashboard/users-log/toggle-role" method="POST">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <input type="number" name="id" value={{$data->id}} hidden>
+
+                                                <button class="button is-small is-info" type="submit">
+                                                    <span>{{implode($data->role)}}</span>
+                                                </button>
+
+                                            </form>
+                                        @endrole
+
                                         <form action="/dashboard/users-log/toggle-dormant" method="POST">
                                             @csrf
                                             @method('PUT')

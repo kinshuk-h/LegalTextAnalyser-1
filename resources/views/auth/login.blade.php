@@ -10,11 +10,11 @@
             alert('{{Session::get('status')}}');
         }
     </script> --}}
-    @if(Session::has('status'))
+    @if(Session::has('status') || Session::has('message'))
         <div class="notification is-primary">
             <button class="delete" onclick="this.parentElement.style.display='none'" ></button>
             <div class="buttons is-centered">
-                {{Session::get('status')}}
+                {{Session::get('status') ?: Session::get('message')}}
             </div>
         </div>
     @endif

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Experts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +19,16 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
+
+        $expert=Experts::where(['email'=> $formFields['email']])->first();
+
+        if($expert == null){
+            return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');
+        }
+
+        if($expert->is_dormant === 1){
+            return back()->with('message', 'You are dormant cannot log In.');
+        }
 
         if(Auth::attempt($formFields)) {
             $request->session()->regenerate();

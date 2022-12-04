@@ -85,12 +85,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::group(['prefix' => 'users-log','middleware'=>'role:SuperAdmin|Admin'], function() {
             Route::get('/', [DashboardUsersLogController::class, 'show']);
             Route::put('/toggle-dormant', [DashboardUsersLogController::class, 'toggleExpertDormant']);
-            // Route::get('/filter', [DashboardTasksManageController::class, 'showFilteredTasks']);
+            Route::put('/toggle-role', [DashboardUsersLogController::class, 'toggleExpertRole'])->middleware('role:SuperAdmin');
         });
 
         Route::group(['prefix' => 'docs-log','middleware'=>'role:SuperAdmin|Admin'], function() {
             Route::get('/', [DashboardDocumentsLogController::class, 'show']);
-            // Route::get('/filter', [DashboardTasksManageController::class, 'showFilteredTasks']);
         });
 
         Route::get('/stats', [DashboardActivityController::class, 'showActivity']);
