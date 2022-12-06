@@ -7,6 +7,7 @@ use App\Models\Experts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
@@ -23,7 +24,15 @@ class RegisterController extends Controller
             'phone_num' => 'required|min:10|max:20|unique:experts',
             'institution_name' => 'required|min:8|max:80',
             'reg_num' => 'required|min:8|max:50|unique:experts',
-            'password' => 'required|min:8|max:255'
+            'password' => [
+                'required',
+                'string',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+            ]
         ]);
 
         $formFields['password']=Hash::make($formFields['password']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class EditUserDetailsController extends Controller
 {
@@ -32,8 +33,17 @@ class EditUserDetailsController extends Controller
 
     public function updatePassword(Request $request){
         $formFields=$request->validate([
-            'old_password' => 'required|min:8|max:255',
-            'new_password' => 'required|min:8|max:255|different:old_password',
+            'old_password' => 'required',
+            'new_password' => [
+                'required',
+                'string',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+                'different:old_password'
+            ],
             'confirm_new_password' => 'required|same:new_password'
         ]);
 
@@ -44,6 +54,6 @@ class EditUserDetailsController extends Controller
             return redirect()->back()->with('message', 'Password changed successfully.');
          
         } 
-        return redirect()->back()->with('message', 'Password does not match.');
+        return redirect()->back()->with('message', 'Old Password does not match.');
     }
 }

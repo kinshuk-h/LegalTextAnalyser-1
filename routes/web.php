@@ -24,7 +24,7 @@ use App\Http\Controllers\DashboardDocumentsLogController;
 |
 */
 //Routes for everyone (guest or authenticated)
-Route::get('/', function () {   return view('home');    });
+Route::get('/', function () {   return view('home');    })->name('home');
 Route::get('/aboutus', function () {    return view('aboutus'); });
 
 // logout
@@ -46,7 +46,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 });
 
-Route::group(['prefix' => 'email'], function() {
+Route::group(['prefix' => 'email','middleware' => 'notverified'], function() {
     // Email Verification
     Route::get('/verify', [EmailVerificationController::class,'showVerificationNotice'])->middleware('auth')->name('verification.notice');
     Route::get('/verify/{id}/{hash}', [EmailVerificationController::class,'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
