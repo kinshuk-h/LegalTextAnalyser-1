@@ -7,7 +7,7 @@ class Paginators{
     public static function arrayPaginator($array, $request)
     {
         $page = $request->input("page", 1);
-        $perPage = 2;
+        $perPage = 10;
         $offset = ($page * $perPage) - $perPage;
     
         return new LengthAwarePaginator(array_slice($array, $offset, $perPage, true), count($array), $perPage, $page,

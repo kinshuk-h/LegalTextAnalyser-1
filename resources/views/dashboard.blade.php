@@ -41,6 +41,12 @@
                         </span>
                         Tasks
                     </a>
+                    <a class="panel-block" href="/dashboard/stats">
+                        <span class="panel-icon">
+                            <i class="material-icons" aria-hidden="true">sort</i>
+                        </span>
+                        Activity
+                    </a>
                 @endrole
                 @hasanyrole('SuperAdmin|Admin')
                     <a class="panel-block" href="/dashboard/users-log">
@@ -56,12 +62,6 @@
                         Documents Log
                     </a>
                 @endhasanyrole
-                <a class="panel-block" href="/dashboard/stats">
-                    <span class="panel-icon">
-                        <i class="material-icons" aria-hidden="true">sort</i>
-                    </span>
-                    Activity
-                </a>
             </nav>
         </section>
 

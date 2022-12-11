@@ -1,19 +1,15 @@
 <b>Please read the instructions carefully:</b>
 <ol class="pl-2">
     <li>
-        Instruction 1 will be written here. Read carefully. All other
-        instructions will follow.
+        You will be assigned one paragraph at a time with time limit 60 minutes to annotate it.
     </li>
     <li>
-        Instruction 1 will be written here. Read carefully. All other
-        instructions will follow.
+        There can be multiple labels for a paragraph. Select all that apply.
     </li>
     <li>
-        Instruction 1 will be written here. Read carefully. All other
-        instructions will follow.
+        Click on the Submit button to submit the labels.
     </li>
     <li>
-        Instruction 1 will be written here. Read carefully. All other
-        instructions will follow.
+        Click on the Skip button to bypass the current paragraph.
     </li>
 </ol>

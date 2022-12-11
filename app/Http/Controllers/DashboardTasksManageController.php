@@ -33,7 +33,7 @@ class DashboardTasksManageController extends Controller
                 ,'allocation_time','labeled_time','status','content','page','case_number',
                 'title','date', 'document_link'])
                 ->having('status', '!=', 'alloted')
-                ->paginate(2)->appends(request()->query());
+                ->paginate(10)->appends(request()->query());
             
             if($result->isEmpty()){
                 return back()->with('message','No data to display,here!!');
@@ -68,7 +68,7 @@ class DashboardTasksManageController extends Controller
                     ->groupBy(['classifications.doc_id','classifications.paragraph_num'
                     ,'allocation_time','labeled_time','status','content','page','case_number',
                     'title','date', 'document_link'])
-                    ->paginate(2)->appends(request()->query());
+                    ->paginate(10)->appends(request()->query());
                     
                 if($result->isEmpty()){
                     return back()->with('message','No data to display,here!!');
@@ -96,7 +96,7 @@ class DashboardTasksManageController extends Controller
                     ->orHaving('label_num', 'like' , $formFields['filterBy'].',%')
                     ->orHaving('label_num', 'like' ,'%,'.$formFields['filterBy'].',%')
                     ->orHaving('label_num', 'like' ,'%,'.$formFields['filterBy'] )
-                    ->paginate(2)->appends(request()->query());
+                    ->paginate(10)->appends(request()->query());
                 
                 if($result->isEmpty()){
                     return back()->with('message','No data to display,here!!');
@@ -129,7 +129,7 @@ class DashboardTasksManageController extends Controller
                 ->groupBy(['classifications.doc_id','classifications.paragraph_num'
                 ,'allocation_time','labeled_time','status','content','page','case_number',
                 'title','date', 'document_link'])
-                ->paginate(2);
+                ->paginate(10);
 
             if($result->isEmpty()){
                 return back()->with('message','No data to display,here!!');

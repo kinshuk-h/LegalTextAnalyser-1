@@ -92,6 +92,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
             Route::get('/', [DashboardDocumentsLogController::class, 'show']);
         });
 
-        Route::get('/stats', [DashboardActivityController::class, 'showActivity']);
+        Route::get('/stats', [DashboardActivityController::class, 'showActivity'])->middleware('role:Annotator');
     });
 });
