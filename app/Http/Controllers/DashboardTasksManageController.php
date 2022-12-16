@@ -12,7 +12,7 @@ class DashboardTasksManageController extends Controller
 {
     public function showTasksBySearch(Request $request){
         $formFields=$request->validate([
-            'searchBy' => 'required|min:1',
+            'searchBy' => 'required|min:1|max:255',
         ]);
 
         $id=auth()->user()->id;

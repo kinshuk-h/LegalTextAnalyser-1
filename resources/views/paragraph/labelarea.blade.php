@@ -90,8 +90,8 @@
                                                     <input type="checkbox" id={{"label-".$label->label_num}} class="is-checkradio is-link"
                                                         name="labels[]"  value="{{$label->label_num}}" />
                                                     <label for={{"label-".$label->label_num}}><span
-                                                            class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-info"
-                                                            data-tooltip="Tooltip content&#10;tooltip content">{{$label->label_name}}</span></label>
+                                                            class="has-tooltip-arrow has-tooltip-multiline has-tooltip-info"
+                                                            data-tooltip="{{$label->details}}">{{$label->label_name}}</span></label>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -110,6 +110,12 @@
                                     @csrf
 
                                     <input type="radio" name="bypass" value="true" hidden checked>
+
+                                    <div class="buttons is-centered">
+                                        @error('bypass')
+                                            <p style="color:red;">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                     
                                     <button type="submit" class="button is-light" id="change_passwd">SKIP</button>
                                 </form>

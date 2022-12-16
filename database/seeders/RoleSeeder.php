@@ -20,11 +20,10 @@ class RoleSeeder extends Seeder
     {
         $expert = Experts::create([
             'name' => 'superadmin', 
-            'email' => 'superadmin@gmail.com',
+            'email' => 'kinshuk.mcs21@cs.du.ac.in',
             'phone_num' => '8945768945',
             'institution_name' => 'DUCS,University Of Delhi',
             'reg_num' => 'IND457896548975',
-            'email_verified_at' => Carbon::now(),
             'password' => bcrypt('superadmin')
         ]);
     

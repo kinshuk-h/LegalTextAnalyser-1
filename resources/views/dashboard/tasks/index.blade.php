@@ -6,14 +6,14 @@
     @endpush
     
     @push('notify-errors')
-        @error('labels')
+        @if($errors->any())
             <div class="notification is-primary">
                 <button class="delete" onclick="this.parentElement.style.display='none'" ></button>
                 <div class="buttons is-centered">
-                    {{ $message }}
+                    {!! implode('', $errors->all('<div>:message</div>')) !!}
                 </div>
             </div>
-        @enderror
+        @endif
     @endpush
 
     <article class="content-area ">
@@ -144,8 +144,8 @@
                                                             <input type="checkbox" id={{"labelcontainer-".$task->doc_id."-".$task->paragraph_num."-label-".$label['label_num']}} class="is-checkradio is-link"  value={{$label['label_num']}}
                                                                 name="labels[]" {{ in_array($label['label_num'] , explode(",",$task->label_num)) ? "checked" : "" }}/>
                                                             <label for={{"labelcontainer-".$task->doc_id."-".$task->paragraph_num."-label-".$label['label_num']}}><span
-                                                                    class="has-tooltip-arrow has-tooltipl-multiline has-tooltip-info"
-                                                                    data-tooltip="Tooltip content&#10;tooltip content">{{$label['label_name']}}</span></label>
+                                                                    class="has-tooltip-arrow has-tooltip-multiline has-tooltip-info"
+                                                                    data-tooltip="{{$label['details']}}">{{$label['label_name']}}</span></label>
                                                         </div>
                                                     @endforeach
                                                 </div>

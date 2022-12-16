@@ -33,10 +33,11 @@ class EditUserDetailsController extends Controller
 
     public function updatePassword(Request $request){
         $formFields=$request->validate([
-            'old_password' => 'required',
+            'old_password' => 'required|max:255',
             'new_password' => [
                 'required',
                 'string',
+                'max:255',
                 Password::min(8)
                     ->mixedCase()
                     ->numbers()

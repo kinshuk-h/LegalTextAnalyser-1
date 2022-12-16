@@ -27,6 +27,7 @@ class RegisterController extends Controller
             'password' => [
                 'required',
                 'string',
+                'max:255',
                 Password::min(8)
                     ->mixedCase()
                     ->numbers()

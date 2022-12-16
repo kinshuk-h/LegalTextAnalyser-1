@@ -42,7 +42,7 @@
 										aria-hidden="true">exit_to_app</i></button>
 								</form>
 							@else
-								<a class="button is-light" href="/register" >Register</a>
+								{{-- <a class="button is-light" href="/register" >Register</a> --}}
 								<a class="button is-light" href="/login" >Login</a>
 							@endauth
 						</div>

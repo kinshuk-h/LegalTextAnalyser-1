@@ -21,6 +21,7 @@ class ResetPasswordController extends Controller
             'password' => [
                 'required',
                 'string',
+                'max:255',
                 \Illuminate\Validation\Rules\Password::min(8)
                     ->mixedCase()
                     ->numbers()
