@@ -38,12 +38,12 @@
 							@auth
 								<form method="POST" action="/logout">
 									@csrf
-									<button class="button is-light" type="submit">Logout<i class="material-icons"
+									<button class="button is-primary is-rounded" type="submit">Logout<i class="material-icons"
 										aria-hidden="true">exit_to_app</i></button>
 								</form>
 							@else
-								{{-- <a class="button is-light" href="/register" >Register</a> --}}
-								<a class="button is-light" href="/login" >Login</a>
+								{{-- <a class="button is-primary is-rounded" href="/register" >Register</a> --}}
+								<a class="button is-primary is-rounded" href="/login" >Login</a>
 							@endauth
 						</div>
 					</div>

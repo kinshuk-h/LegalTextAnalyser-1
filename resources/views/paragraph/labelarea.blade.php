@@ -57,7 +57,7 @@
                     <div class="tile is-vertical is-8">
                         <div class="tile is-parent">
                             <article class="paragraph-content tile is-child notification has-background-success-light">
-                                <p class="paragraph-content title">Your Paragraph Here</p>
+                                <p class="paragraph-content title">Read Your Paragraph Here</p>
                                 <div class="paragraph-content content">
                                     <p class="paragraph-content subtitle has-text-info">Details of the <a class="paragraph-content subtitle has-text-info" href={{ $message['document']->document_link }} target="_blank" rel="noopener noreferrer">Document</a></p>
                                     <strong class="paragraph-content">Document Number: </strong><span class="paragraph-content">{{ $message['document']->doc_id }}</span><br>
@@ -77,7 +77,7 @@
                         <article class="tile is-child has-background-danger-light notification">
                             <div class="content rows">
                                 <div>
-                                    <p class="title is-3">Labels</p>
+                                    <p class="title is-3">List Of Labels</p>
                                     <p class="subtitle">You can select multiple labels</p>
                                 </div>
                                 <form action="/paragraph/label" method="POST">

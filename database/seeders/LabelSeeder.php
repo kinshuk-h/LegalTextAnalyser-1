@@ -93,6 +93,14 @@ class LabelSeeder extends Seeder
             {
               "Label": "Impugned order",
               "Short Description": "An impugned order is an order which has been challanged."
+            },
+            {
+              "Label": "Background",
+              "Short Description": ""
+            },
+            {
+              "Label": "Operative",
+              "Short Description": ""
             }
         ]',true);
 
