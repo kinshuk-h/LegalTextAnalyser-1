@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\Documents;
 use App\Models\Paragraphs;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 use Traversable;
 
 class ParagraphSeeder extends Seeder
