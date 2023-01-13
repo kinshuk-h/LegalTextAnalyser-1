@@ -48,7 +48,7 @@ $ php artisan db:seed
 
 - The frontend's Node.js dependencies may now be installed, and npm can be used to create the frontend's assets. :
 
-$ npm install
+$ npm install <br/>
 $ npm run build
 
 - Last but not least, you may launch the Laravel development server by executing the following command in the project's root directory:
