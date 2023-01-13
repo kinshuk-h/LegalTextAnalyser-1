@@ -7,6 +7,7 @@ use App\Models\Documents;
 use App\Models\Paragraphs;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Traversable;
 
 class ParagraphSeeder extends Seeder
 {
@@ -22,11 +23,22 @@ class ParagraphSeeder extends Seeder
         curl_close($curl);
         return $result;
     }
-    
+
     static function addParagraphs($document_url, $extractor) {
         $docs_data = json_decode(file_get_contents($document_url), true)['data'];
 
         foreach($docs_data as $doc){
+            // If entry data is a merger of metadata of multiple documents, retain the first
+            if(is_array($doc['case_number']) or ($doc['case_number'] instanceof Traversable)) {
+                $newdoc = [
+                    'case_number'   => $doc['case_number'][0],
+                    'title'         => $doc['title'][0],
+                    'date'          => $doc['date'][0],
+                    'document_href' => $doc['document_href'][0]
+                ];
+                $doc = $newdoc;
+            }
+
             $ret=Documents::updateOrCreate(
                 ['case_number' => $doc['case_number']],
                 [
