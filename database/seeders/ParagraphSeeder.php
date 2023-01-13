@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use App\Models\Documents;
 use App\Models\Paragraphs;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Traversable;
 
@@ -34,7 +33,8 @@ class ParagraphSeeder extends Seeder
                     'case_number'   => $doc['case_number'][0],
                     'title'         => $doc['title'][0],
                     'date'          => $doc['date'][0],
-                    'document_href' => $doc['document_href'][0]
+                    'document_href' => $doc['document_href'][0],
+                    'paragraphs'    => array_key_exists("paragraphs", $doc) ? $doc['paragraphs'] : []
                 ];
                 $doc = $newdoc;
             }
@@ -50,7 +50,7 @@ class ParagraphSeeder extends Seeder
             );
 
             $paragraphs_chunk=[];
-            if(!array_key_exists("paragraphs", $doc)) return;
+            if(!array_key_exists("paragraphs", $doc)) continue;
             $paragraphs=$doc['paragraphs'][$extractor];
             foreach($paragraphs as $para){
                 $id=(!is_null($ret['id'])) ? $ret['id'] : $ret['doc_id'];
