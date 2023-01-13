@@ -1,66 +1,58 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Deployment
+To install this Laravel project, you'll need to make sure you have the following installed on your system:
+- PHP
+- Composer
+- Node.js
+- npm (comes with Node.js)
+- MySQL (comes with XAMPP)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Once you've done that, you can install and set up this Laravel project by following these instructions:
 
-## About Laravel
+- For this Laravel project, you must start the MySQL server in Workbench or phpMyAdmin and create a new MySQL database. Run the following SQL command after logging into your MySQL server using the mysql command-line client:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+$ CREATE DATABASE <database-name>;
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- The Laravel project must be cloned from GitHub. Go to the location where you wish to install the project in a terminal after launching it. Run the subsequent command to clone the project after that:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+$ git clone https://github.com/paraspant09/LegalTextAnalyser.git
 
-## Learning Laravel
+- After the project has been cloned, use Composer to install the PHP requirements by navigating to the project directory:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+$ composer install
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- You must then configure your environment variables. Your database credentials and application key are two examples of environment-specific settings that Laravel stores in an .env file. You can duplicate the project's .env.example file to generate an .env environment variable file:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+$ cp .env.example .env
 
-## Laravel Sponsors
+- In a text editor, open the .env file, and make the necessary changes to the settings. For instance, you must set the DB_DATABASE, DB_USERNAME, and DB_PASSWORD variables to match your database credentials.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- In .env file add link from where the Documents should be seeded in the database : 
+https://api.github.com/repos/kinshuk-h/LT-Crawler/contents/data/json/DHC%20Judgments
 
-### Premium Partners
+- Create a mailtrap.io account (or another email testing server) and copy the mailtrap laravel configurations to the .env file (if error occurs then change port as firewall may restrict ports). 
+For production, Change the environment to production and add email configurations for real email IDs.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- After making the necessary changes to the .env file, you must create an application key. The data in your application is encrypted and secured using this key. You can generate an application key by running the following command:
 
-## Contributing
+$ php artisan key:generate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- You may now use migrations to generate the database tables after setting up the Laravel backend. The structure of the database tables is specified by Laravel using migrations. To run the migrations, run the following command:
 
-## Code of Conduct
+$ php artisan migrate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+With this, all of the database tables required for this Laravel project will be created.
 
-## Security Vulnerabilities
+- Once the database tables have been constructed, seeders can be used to add the data needed to operate, such as admin, document, and user data. For testing purposes, Laravel creates dummy data using seeders.For this project, it is a necessity for production deployment as well.To run the seeders, run the following command:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+$ php artisan db:seed
 
-## License
+- The frontend's Node.js dependencies may now be installed, and npm can be used to create the frontend's assets. :
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+$ npm install
+$ npm run build
+
+- Last but not least, you may launch the Laravel development server by executing the following command in the project's root directory:
+
+$ php artisan serve
+
+By doing this, the Laravel development server at localhost:8000 will be launched. To access this Laravel project, enter this URL into your web browser.
